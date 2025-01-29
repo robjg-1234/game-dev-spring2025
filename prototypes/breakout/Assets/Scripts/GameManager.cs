@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject lifeline;
     BrickScript[,] bricks = new BrickScript[6, 9];
     public Action callBall;
+    public Action speedUpBall;
+    public Action weirdPaddle;
     static public GameManager instance;
     int score = 0;
     int remainingBalls = 5;
@@ -25,45 +28,50 @@ public class GameManager : MonoBehaviour
     public int level = 1;
     int currentPower = 4;
     int pointmultiplier = 1;
+    int ballsOnPlay = 0;
     BrickScript powerBrick;
-    bool ballOnplay = false;
+    BrickScript debuffBrick;
+    paddleScript paddleController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         instance = this;
         buildBoard();
+        paddleController = paddle.GetComponent<paddleScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!ballOnplay && remainingBalls > 0)
+        if (ballsOnPlay == 0 && remainingBalls > 0)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(ball, Vector3.zero, Quaternion.identity);
-                ballOnplay = true;
+                ballsOnPlay++;
                 remainingBalls--;
                 updateBalls();
             }
         }
         else
         {
-            if (hitCount > 5)
-            {
-                selectPowerBlock();
-                hitCount = 0;
-
-            }
-            if (Input.GetKeyDown(KeyCode.Z) && ballOnplay)
+            if (Input.GetKeyDown(KeyCode.Z) && ballsOnPlay > 0)
             {
                 activatePower();
+            }
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                activateDebuff();
+            }
+            if (Input.GetKeyDown(KeyCode.R) && remainingBalls==0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
     }
     public void stopBallPlay()
     {
-        ballOnplay = false;
+        ballsOnPlay--;
     }
     public void updateScore(int scored)
     {
@@ -90,7 +98,7 @@ public class GameManager : MonoBehaviour
         randomizer();
         if (powerBrick != null)
         {
-            powerBrick.setColor(7);
+            powerBrick.setColor(8);
             powerBrick = null;
         }
         bool found = false;
@@ -107,10 +115,45 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private void selectDebuffBlock()
+    {
+        randomizer();
+        if (debuffBrick != null)
+        {
+            debuffBrick.setColor(8);
+            debuffBrick = null;
+        }
+        bool found = false;
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < randomSquares.Length; j++)
+            {
+                if (!found)
+                {
+                    if (bricks[i, randomSquares[j]] != null && bricks[i, randomSquares[j]] != powerBrick)
+                    {
+                        debuffBrick = bricks[i, randomSquares[j]];
+                        debuffBrick.setColor(7);
+                        found = true;
+                    }
+                }
+            }
+        }
+    }
     public void hitCounter()
     {
         hitCount++;
         checkBoard();
+        if (hitCount / 5 >= 2)
+        {
+            selectPowerBlock();
+            selectDebuffBlock();
+            hitCount = 0;
+        }
+        else if (hitCount % 5 == 0)
+        {
+            selectPowerBlock();
+        }
     }
     void checkBoard()
     {
@@ -130,6 +173,7 @@ public class GameManager : MonoBehaviour
             buildBoard();
             layer = 0;
             level++;
+            paddleController.speed = 25 + 2 * level - 1;
         }
     }
     void buildBoard()
@@ -176,12 +220,16 @@ public class GameManager : MonoBehaviour
             //Double Points
             powerUp.color = Color.yellow;
         }
+        else if (powerNumber == 4)
+        {
+            //The Pinballer
+            powerUp.color = Color.magenta;
+        }
         currentPower = powerNumber;
-
     }
     void activatePower()
     {
-        if (currentPower < 4)
+        if (currentPower < 5)
         {
             if (currentPower == 0)
             {
@@ -203,15 +251,23 @@ public class GameManager : MonoBehaviour
                 //Double Points
                 StartCoroutine(doublePoints());
             }
-            currentPower = 4;
+            else if (currentPower == 4)
+            {
+                //Triple Ball
+                StartCoroutine(summonTwoBalls());
+            }
+            currentPower = 5;
             powerUp.color = Color.white;
         }
     }
+    //Power Ups
     IEnumerator biggerPaddle()
     {
-        paddle.transform.localScale = new Vector3(5f, 0.5f, 1f);
+        paddle.transform.localScale = new Vector3(6f, 0.5f, 1f);
+        paddleController.changeColor(Color.red);
         yield return new WaitForSeconds(10);
-        paddle.transform.localScale = new Vector3(4f, 0.5f, 1f);
+        paddle.transform.localScale = new Vector3(5f, 0.5f, 1f);
+        paddleController.changeColor(Color.white);
     }
     IEnumerator activateLifeline()
     {
@@ -224,5 +280,75 @@ public class GameManager : MonoBehaviour
         pointmultiplier *= 2;
         yield return new WaitForSeconds(15);
         pointmultiplier = 1;
+    }
+    IEnumerator summonTwoBalls()
+    {
+        Instantiate(ball, Vector3.zero, Quaternion.identity);
+        ballsOnPlay++;
+        yield return new WaitForSeconds(1f);
+        Instantiate(ball, Vector3.zero, Quaternion.identity);
+        ballsOnPlay++;
+    }
+    //Debuffs
+    public void activateDebuff()
+    {
+        int debuff = Random.Range(0, 4);
+
+        if (debuff == 0)
+        {
+            //Smaller Paddle
+            StartCoroutine(smallerPaddle());
+        }
+        else if (debuff == 1)
+        {
+            //Faster Ball
+            speedUpBall();
+        }
+        else if (debuff == 2)
+        {
+            //Slower Paddle
+            StartCoroutine(slowThePaddle());
+        }
+        else if (debuff == 3)
+        {
+            //Inverse Controls
+            StartCoroutine(invertController());
+        }
+        else if (debuff == 4)
+        {
+            //Unpredictable Bounces
+            weirdPaddle();
+            StartCoroutine(weirdMovement());
+        }
+    }
+    IEnumerator smallerPaddle()
+    {
+        paddle.transform.localScale = new Vector3(4f, 0.5f, 1f);
+        paddleController.changeColor(Color.blue);
+        yield return new WaitForSeconds(10);
+        paddle.transform.localScale = new Vector3(5f, 0.5f, 1f);
+        paddleController.changeColor(Color.white);
+    }
+    IEnumerator invertController()
+    {
+        paddleController.changeController(-1);
+        paddleController.changeColor(Color.green);
+        yield return new WaitForSeconds(10);
+        paddleController.changeController(1);
+        paddleController.changeColor(Color.white);
+    }
+    IEnumerator slowThePaddle()
+    {
+        paddleController.speed -= 10;
+        paddleController.changeColor(Color.cyan);
+        yield return new WaitForSeconds(7.5f);
+        paddleController.speed += 10;
+        paddleController.changeColor(Color.white);
+    }
+    IEnumerator weirdMovement()
+    {
+        paddleController.changeColor(Color.yellow);
+        yield return new WaitForSeconds(10);
+        paddleController.changeColor(Color.white);
     }
 }

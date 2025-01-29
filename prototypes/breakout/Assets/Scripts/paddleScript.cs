@@ -2,29 +2,33 @@ using UnityEngine;
 
 public class paddleScript : MonoBehaviour
 {
-    float speed = 35f;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
+    public float speed = 26f;
+    [SerializeField] Renderer rend;
+    Color defaultColor = Color.white;
+    int controllerInversion = 1;
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        float hAxis = Input.GetAxis("Horizontal");
-        if (transform.position.x > 23.7f && hAxis > 0)
+        float hAxis = Input.GetAxisRaw("Horizontal");
+        if (transform.position.x > 23.2f && hAxis*controllerInversion > 0)
         {
             transform.position = transform.position;
         }
-         else if (transform.position.x < -22.4f && hAxis < 0)
+        else if (transform.position.x < -21.9f && hAxis*controllerInversion < 0)
         {
             transform.position = transform.position;
         }
-        else
+        else if (hAxis != 0)
         {
-            transform.position = Vector3.right * hAxis * speed * Time.deltaTime + transform.position;
+            transform.position += Vector3.right * hAxis * speed * Time.deltaTime * controllerInversion;
         }
+    }
+    public void changeColor(Color tempColor)
+    {
+        rend.material.color = tempColor;
+    }
+    public void changeController(int direction)
+    {
+        controllerInversion = direction;
     }
 }

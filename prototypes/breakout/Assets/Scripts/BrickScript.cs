@@ -19,6 +19,10 @@ public class BrickScript : MonoBehaviour
         {
             gameManager.choosePower();
         }
+        else if (rend.material.color == Color.magenta)
+        {
+            gameManager.activateDebuff();
+        }
     }
     // Update is called once per frame
     void Update()
@@ -58,6 +62,10 @@ public class BrickScript : MonoBehaviour
         else if(number == 6)
         {
             rend.material.color = Color.white;
+        }
+        else if(number == 7)
+        {
+            rend.material.color = Color.magenta;
         }
         else
         {
