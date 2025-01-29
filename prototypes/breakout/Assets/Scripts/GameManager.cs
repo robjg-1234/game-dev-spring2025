@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     int layer = 0;
     int hitCount = 0;
     public int level = 1;
-    int currentPower = 4;
+    int currentPower = 5;
     int pointmultiplier = 1;
     int ballsOnPlay = 0;
     BrickScript powerBrick;
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
     }
     public void choosePower()
     {
-        int powerNumber = Random.Range(0, 4);
+        int powerNumber = Random.Range(0, 5);
         if (powerNumber == 0)
         {
             //Bigger Paddle
