@@ -30,11 +30,11 @@ public class ballScript : MonoBehaviour
         {
             
             ContactPoint2D hit = collision.GetContact(0);
-            if (hit.point.x < collision.transform.position.x - 0.75)
+            if (hit.point.x < collision.transform.position.x - 0.65)
             {
                 rb.linearVelocity = new Vector2(-4, rb.linearVelocity.y);
             }
-            else if (hit.point.x > collision.transform.position.x + 0.75)
+            else if (hit.point.x > collision.transform.position.x + 0.65)
             {
                 rb.linearVelocity = new Vector2(4, rb.linearVelocity.y);
             }
@@ -104,7 +104,14 @@ public class ballScript : MonoBehaviour
             hitBrick.tryToBreak();
             if (hitBrick.brickType == 9)
             {
-                hitBrick.ballsConsumed += 1;
+                if (gm.bigDonut)
+                {
+                    hitBrick.ballsConsumed += 2;
+                }
+                else
+                {
+                    hitBrick.ballsConsumed += 1;
+                }
                 Destroy(gameObject);
             }
         }

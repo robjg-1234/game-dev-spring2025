@@ -13,7 +13,8 @@ public class brickScript : MonoBehaviour
     public bool unbreakable = false;
     public int ballsConsumed = 0;
     int hits = 0;
-    public float multiplier = 1;
+    float multiplier = 1;
+    public float defaultMult = 1;
     int daysActive = 0;
     bool hitOnce = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -76,13 +77,13 @@ public class brickScript : MonoBehaviour
             case 8:
                 //Trust Fund
                 rend.color = Color.blue;
-                multiplier = 0.5f * daysActive;
+                defaultMult = 0.5f * daysActive;
                 scoreValue = 0f;
                 break;
             case 9:
                 //Black Hole
                 rend.color = Color.black;
-                multiplier = 3f * ballsConsumed;
+                defaultMult = 3f * ballsConsumed;
                 scoreValue = 0f;
                 gameObject.GetComponent<Collider2D>().isTrigger = true;
                 unbreakable = true;
@@ -96,6 +97,11 @@ public class brickScript : MonoBehaviour
                 //Refresher
                 rend.color = new Color(0.5575659f, 1, 0.504717f);
                 scoreValue = 25f;
+                break;
+            case 12:
+                //The Eye
+                rend.color = new Color(0.6303558f, 0, 1);
+                scoreValue = 0;
                 break;
             default:
                 //Basic Brick
@@ -197,6 +203,12 @@ public class brickScript : MonoBehaviour
                     gm.updateScore(150f * multiplier);
                 }
                 break;
+            case 12:
+                if (!hitOnce)
+                {
+                    gm.gainRerolls(4);
+                }
+                break;
         }
         hitOnce = false;
     }
@@ -207,12 +219,6 @@ public class brickScript : MonoBehaviour
     public void newRoundRefresh()
     {
         daysActive += 1;
-        if (brickType == 8)
-        {
-
-            Debug.Log(daysActive);
-        }
-
         refreshSelf();
         updateBrickType(brickType);
     }
@@ -220,7 +226,7 @@ public class brickScript : MonoBehaviour
     {
         if (brickType != 8 && brickType != 9)
         {
-            multiplier = 1;
+            multiplier = defaultMult;
             int maxX = Mathf.Clamp(posX + 1, 0, 8) + 1;
             int minX = Mathf.Clamp(posX - 1, 0, 8);
             int maxY = Mathf.Clamp(posY + 1, 0, 4) + 1;
@@ -233,11 +239,11 @@ public class brickScript : MonoBehaviour
                     {
                         if (gm.board[i, j].brickType == 8)
                         {
-                            multiplier *= gm.board[i, j].multiplier;
+                            multiplier *= gm.board[i, j].defaultMult;
                         }
                         else if (gm.board[i, j].brickType == 9)
                         {
-                            multiplier *= gm.board[i, j].multiplier;
+                            multiplier *= gm.board[i, j].defaultMult;
                         }
                     }
                 }
@@ -264,6 +270,7 @@ public class brickScript : MonoBehaviour
             }
             else if (brickType == 11)
             {
+                gm.fixPaddle();
                 if (!hitOnce)
                 {
                     for (int i = 0; i < 9; i++)

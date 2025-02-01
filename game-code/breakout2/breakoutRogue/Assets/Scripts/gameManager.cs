@@ -22,7 +22,14 @@ public class gameManager : MonoBehaviour
     int options = 3;
     bool canGameStart = false;
     public bool gameRunning = false;
-    int paddleHits = 15;
+    public int paddleHits = 15;
+    public int defaultPaddle = 15;
+    public int desperadoMult = 1;
+    public bool greedyHand = false;
+    public bool utilityBelt = false;
+    public bool bigDonut = false;
+    public bool faultyEquipment = false;
+    ArrayList activeRelics = new ArrayList();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -45,34 +52,64 @@ public class gameManager : MonoBehaviour
     }
     public void updateScore(float value)
     {
-        Debug.Log(value);
-        currentScore += Mathf.RoundToInt(value);
-        score.text = currentScore +"/"+scoreToBeat;
+        currentScore += Mathf.RoundToInt(value * desperadoMult);
+        score.text = currentScore + "/" + scoreToBeat;
     }
-    public int selectRandomBrick()
+    public int selectRandomBrick(int currentValue)
     {
-        int randomChoice = Random.Range(0,20);
+        int randomChoice = Random.Range(0, 20);
         if (randomChoice < 10)
         {
             //Common Brick
-            randomChoice = Random.Range(0, 5);
+            int[] commonChoice = new int[] { 0, 1, 2, 3, 4 };
+            commonChoice = shuffleArray(commonChoice);
+            for (int i = 0; i < commonChoice.Length; i++)
+            {
+                if (commonChoice[i] != currentValue)
+                {
+                    randomChoice = commonChoice[i];
+                }
+            }
         }
-        else if (randomChoice <16)
+        else if (randomChoice < 16)
         {
             //Uncommon Brick
-            randomChoice = Random.Range(5, 9);
+            int[] uncommonChoice = new int[] { 5, 6, 7, 8 };
+            uncommonChoice = shuffleArray(uncommonChoice);
+            for (int i = 0; i < uncommonChoice.Length; i++)
+            {
+                if (uncommonChoice[i] != currentValue)
+                {
+                    randomChoice = uncommonChoice[i];
+                }
+            }
         }
         else if (randomChoice < 19)
         {
             //Rare Brick
-            randomChoice = Random.Range(9, 11);
+            int[] rareChoice = new int[] { 9, 10 };
+            rareChoice = shuffleArray(rareChoice);
+            for (int i = 0; i < rareChoice.Length; i++)
+            {
+                if (rareChoice[i] != currentValue)
+                {
+                    randomChoice = rareChoice[i];
+                }
+            }
         }
         else
         {
             //Legendary Brick
-            randomChoice = 11;
+            int[] legendaryChoice = new int[] { 11, 12 };
+            legendaryChoice = shuffleArray(legendaryChoice);
+            for (int i = 0; i < legendaryChoice.Length; i++)
+            {
+                if (legendaryChoice[i] != currentValue)
+                {
+                    randomChoice = legendaryChoice[i];
+                }
+            }
         }
-        Debug.Log(randomChoice);
         return randomChoice;
     }
     public int getNewType(int posX, int posY)
@@ -102,41 +139,55 @@ public class gameManager : MonoBehaviour
     void startRound()
     {
         options = 3;
-        if (roundNumber==3)
+        if (roundNumber == 3)
         {
-            if (waveNumber==1)
+            if (currentScore >= scoreToBeat)
             {
-                waveNumber++;
-                wave.text = "Wave " + waveNumber;
-                scoreToBeat = 25000;
-                currentScore = 0;
-                updateScore(0);
+                if (waveNumber < 3)
+                {
+                    rm.openSummary(currentScore, true, false, scoreToBeat, false);
+                    if (waveNumber == 1)
+                    {
+                        waveNumber++;
+                        wave.text = "Wave " + waveNumber;
+                        scoreToBeat = 15000;
+                        currentScore = 0;
+                        updateScore(0);
+                    }
+                    else if (waveNumber == 2)
+                    {
+                        waveNumber++;
+                        wave.text = "Wave " + waveNumber;
+                        scoreToBeat = 50000;
+                        currentScore = 0;
+                        updateScore(0);
+                    }
+                    gainRerolls(12);
+                    paddle.SetActive(true);
+                    paddleHits = defaultPaddle;
+                    roundNumber = 1;
+                    round.text = "Round " + roundNumber;
+                    paddle.transform.position = new Vector3(0, 0.2246f, 0);
+                }
+                else
+                {
+                    rm.openSummary(currentScore, true, false, scoreToBeat, true);
+                }
             }
-            else if (waveNumber == 2)
+            else
             {
-                waveNumber++;
-                wave.text = "Wave " + waveNumber;
-                scoreToBeat = 50000;
-                currentScore = 0;
-                updateScore(0);
+                rm.openSummary(currentScore, true, true, scoreToBeat, false);
             }
-            gainRerolls(12);
-            paddle.SetActive(true);
-            paddleHits = 15;
-            roundNumber = 1;
-            round.text = "Round " + roundNumber;
-            paddle.transform.position = new Vector3(0, 0.2246f, 0);
         }
         else
         {
             paddle.SetActive(true);
-            paddleHits = 15;
+            paddleHits = defaultPaddle;
             roundNumber++;
             round.text = "Round " + roundNumber;
             paddle.transform.position = new Vector3(0, 0.2246f, 0);
+            rm.openSummary(currentScore, false, false, scoreToBeat, false);
         }
-        rm.startRound();
-
     }
     public bool tryToUseReroll()
     {
@@ -153,6 +204,19 @@ public class gameManager : MonoBehaviour
     }
     public void gainRerolls(int numRerolls)
     {
+        if (!greedyHand)
+        {
+            if (numRerolls == 32)
+            {
+                greedyHand = true;
+            }
+            if (utilityBelt)
+            {
+                availableRerolls += 2;
+            }
+            availableRerolls += numRerolls;
+            rerolls.text = "Rerolls: " + availableRerolls;
+        }
         if (numRerolls == 3)
         {
             options--;
@@ -161,8 +225,6 @@ public class gameManager : MonoBehaviour
                 canGameStart = true;
             }
         }
-        availableRerolls += numRerolls;
-        rerolls.text = "Rerolls: " + availableRerolls;
     }
     public void activateBrick(brickScript reMake)
     {
@@ -180,19 +242,19 @@ public class gameManager : MonoBehaviour
             for (int j = 0; j < 5; j++)
             {
                 board[i, j].gameObject.SetActive(true);
-                board[i,j].checkRoundEndAbility();
+                board[i, j].checkRoundEndAbility();
             }
         }
         startRound();
-        while(!canGameStart)
+        while (!canGameStart)
         {
             yield return null;
         }
         for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j<5; j++)
+            for (int j = 0; j < 5; j++)
             {
-                board[i,j].newRoundRefresh();
+                board[i, j].newRoundRefresh();
             }
         }
         for (int i = 0; i < 9; i++)
@@ -205,10 +267,40 @@ public class gameManager : MonoBehaviour
     }
     public void checkPaddle()
     {
-        paddleHits--;
-        if (paddleHits == 0)
+        if (faultyEquipment)
+        {
+            int chance = Random.Range(0, 2);
+            paddleHits -= 2 * chance;
+        }
+        else
+        {
+            paddleHits--;
+        }
+
+        if (paddleHits <= 0)
         {
             paddle.SetActive(false);
         }
+    }
+    public void fixPaddle()
+    {
+        paddleHits = defaultPaddle;
+        paddle.SetActive(true);
+    }
+    public int[] shuffleArray(int[] target)
+    {
+        int[] tempArray = target;
+        for (int i = 0; i < target.Length; i++)
+        {
+            int temp = Random.Range(0, target.Length);
+            int tempVal = tempArray[i];
+            tempArray[i] = tempArray[temp];
+            tempArray[temp] = tempVal;
+        }
+        return tempArray;
+    }
+    public void FullMetalJacketChange()
+    {
+        paddle.GetComponent<paddleScript>().speed *= 2;
     }
 }

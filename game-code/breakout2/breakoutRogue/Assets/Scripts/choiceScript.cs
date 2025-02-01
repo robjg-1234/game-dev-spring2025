@@ -80,15 +80,18 @@ public class choiceScript : MonoBehaviour
                 brickDescription.text = "Gives 25 score. Replenishes the board and paddle bounces, can only be used once per round.";
                 brickColor.color = new Color(0.5575659f,1, 0.504717f);
                 break;
-
-
+            case 12:
+                brickTitle.text = "The Eye";
+                brickDescription.text = "Provides no score. If it is not hit throughout the round, gain 4 rerolls.";
+                brickColor.color = new Color(0.6303558f, 0, 1);
+                break;
         }
     }
     public void reroll()
     {
         if (gm.tryToUseReroll())
         {
-            changeOption(gm.selectRandomBrick());
+            changeOption(gm.selectRandomBrick(type));
         }
     }
     public void skip()

@@ -3,7 +3,7 @@ using UnityEngine;
 public class paddleScript : MonoBehaviour
 {
     gameManager gm;
-    float speed = 15f;
+    public float speed = 15f;
     // Update is called once per frame
     private void Start()
     {
