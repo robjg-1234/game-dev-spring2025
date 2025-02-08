@@ -1,4 +1,6 @@
+using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -98,7 +100,7 @@ public class choiceScript : MonoBehaviour
     {
         panel.color = Color.white;
         gm.gainRerolls(3);
-        gameObject.SetActive(false);
+        StartCoroutine(CloseThisWindow());
     }
     public void selected() 
     {
@@ -113,8 +115,20 @@ public class choiceScript : MonoBehaviour
         }
         else
         {
-            panel.color = Color.white;
-            gameObject.SetActive(false);
+            StartCoroutine(CloseThisWindow());
         }
     }
+    IEnumerator CloseThisWindow()
+    {
+        while(gameObject.transform.localScale.x > 0)
+        {
+            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 0.01f, gameObject.transform.localScale.y - 0.01f, gameObject.transform.localScale.z - 0.01f);
+            yield return null;
+        }
+        panel.color = Color.white;
+        gameObject.SetActive(false);
+        gameObject.transform.localScale = Vector3.zero;
+    }
+
+    
 }

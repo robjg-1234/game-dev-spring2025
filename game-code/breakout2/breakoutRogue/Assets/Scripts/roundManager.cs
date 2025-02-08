@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,12 +24,10 @@ public class roundManager : MonoBehaviour
     }
     public void startRound()
     {
-        option1.SetActive(true);
         option1.GetComponent<choiceScript>().changeOption(gm.selectRandomBrick(-1));
-        option2.SetActive(true);
         option2.GetComponent<choiceScript>().changeOption(gm.selectRandomBrick(-1));
-        option3.SetActive(true);
         option3.GetComponent<choiceScript>().changeOption(gm.selectRandomBrick(-1));
+        StartCoroutine(ShowOptions());
     }
     public void closeSummary()
     {
@@ -36,16 +35,9 @@ public class roundManager : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        else if (waveWin)
-        {
-            roundSummary.SetActive(false);
-            rms.ShowRelics();
-            waveWin = false;
-        }
         else
         {
-            roundSummary.SetActive(false);
-            startRound();
+            StartCoroutine(MinimizeWindow());
         }
     }
     public void openSummary(int score, bool isWave, bool lost, int objective, bool win)
@@ -90,8 +82,55 @@ public class roundManager : MonoBehaviour
             buttonDesc.text = "Start";
             gameStart = false;
         }
-        roundSummary.SetActive(true);
+        StartCoroutine(MaximizeWindow());
+    }
+    IEnumerator MinimizeWindow()
+    {
+        while (roundSummary.transform.localScale.x > 0)
+        {
+            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x-0.01f, roundSummary.transform.localScale.y - 0.01f, roundSummary.transform.localScale.z - 0.01f);
+            yield return null;
+        }
+        roundSummary.SetActive(false);
+        roundSummary.transform.localScale = Vector3.zero;
+        if (waveWin)
+        {
+            rms.ShowRelics();
+            waveWin = false;
+        }
+        else
+        {
+            startRound();
+        }
+        
     }
 
+    IEnumerator MaximizeWindow()
+    {
+        roundSummary.SetActive(true);
+        while (roundSummary.transform.localScale.x < 1)
+        {
+            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x + 0.01f, roundSummary.transform.localScale.y + 0.01f, roundSummary.transform.localScale.z + 0.01f);
+            yield return null;
+        }
+        roundSummary.transform.localScale = new Vector3(1,1,1);
+    }
+
+    IEnumerator ShowOptions()
+    {
+        option1.SetActive(true);
+        option2.SetActive(true);
+        option3.SetActive(true);
+        while (option1.transform.localScale.x < 1)
+        {
+            option1.transform.localScale = new Vector3(option1.transform.localScale.x + 0.01f, option1.transform.localScale.y + 0.01f, option1.transform.localScale.z + 0.01f);
+            option2.transform.localScale = new Vector3(option2.transform.localScale.x + 0.01f, option2.transform.localScale.y + 0.01f, option2.transform.localScale.z + 0.01f);
+            option3.transform.localScale = new Vector3(option3.transform.localScale.x + 0.01f, option3.transform.localScale.y + 0.01f, option3.transform.localScale.z + 0.01f);
+            yield return null;
+        }
+        option1.transform.localScale = new Vector3(1, 1, 1);
+        option2.transform.localScale = new Vector3(1, 1, 1);
+        option3.transform.localScale = new Vector3(1, 1, 1);
+    }
 
 }

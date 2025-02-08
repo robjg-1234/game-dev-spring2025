@@ -1,11 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class brickScript : MonoBehaviour
 {
     [SerializeField] SpriteRenderer rend;
     [SerializeField] int posY;
     [SerializeField] int posX;
+    [SerializeField] GameObject tempScoreShower;
+    [SerializeField] Camera cam;
+    [SerializeField] GameObject canvasObject;
+    GameObject child;
     gameManager gm;
     float scoreValue = 25f;
     public int brickType = -1;
@@ -17,6 +22,8 @@ public class brickScript : MonoBehaviour
     public float defaultMult = 1;
     int daysActive = 0;
     bool hitOnce = false;
+    bool flashing = false;
+    float tempVal = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -72,7 +79,10 @@ public class brickScript : MonoBehaviour
                 //Reinforcements
                 rend.color = new Color(1f, 0.611645f, 0);
                 scoreValue = 50;
-                checkSurrounding(brickType);
+                if (!hitOnce)
+                {
+                    checkSurrounding(brickType);
+                }
                 break;
             case 8:
                 //Trust Fund
@@ -137,7 +147,10 @@ public class brickScript : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FlashRed());
+            if (!flashing)
+            {
+                StartCoroutine(FlashRed());
+            }
         }
     }
     IEnumerator FlashRed()
@@ -150,6 +163,7 @@ public class brickScript : MonoBehaviour
         rend.color = Color.red;
         yield return new WaitForSeconds(0.5f);
         rend.color = temp;
+        flashing = false;
     }
 
     int checkSurrounding(int typeCheck)
@@ -185,7 +199,7 @@ public class brickScript : MonoBehaviour
         {
             for (int j = minY; j < maxY; j++)
             {
-                if (gm.board[i, j].brickType !=10)
+                if (gm.board[i, j].brickType != 10)
                 {
                     gm.board[i, j].tryToBreak();
                 }
@@ -200,7 +214,8 @@ public class brickScript : MonoBehaviour
             case 2:
                 if (!hitOnce)
                 {
-                    gm.updateScore(150f * multiplier);
+                    createTempScore(150f * multiplier * gm.desperadoMult);
+                    gm.updateScore(150f * multiplier * gm.desperadoMult);
                 }
                 break;
             case 12:
@@ -252,51 +267,70 @@ public class brickScript : MonoBehaviour
     }
     public void tryToBreak()
     {
-        if (brickType >= 0 && gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
-            hits++;
-            if (brickType == 10)
+            if (brickType >= 0)
             {
-                if (durable)
+                hits++;
+                if (brickType == 10)
                 {
-                    durable = false;
-                    updateBrickType(brickType);
-                }
-                else
-                {
-                    gameObject.SetActive(false);
-                }
-                activateSurrounding();
-            }
-            else if (brickType == 11)
-            {
-                gm.fixPaddle();
-                if (!hitOnce)
-                {
-                    for (int i = 0; i < 9; i++)
+                    if (durable)
                     {
-                        for (int j = 0; j < 5; j++)
+                        durable = false;
+                        updateBrickType(brickType);
+                    }
+                    else
+                    {
+                        gameObject.SetActive(false);
+                    }
+                    activateSurrounding();
+                }
+                else if (brickType == 11)
+                {
+                    gm.fixPaddle();
+                    if (!hitOnce)
+                    {
+                        for (int i = 0; i < 9; i++)
                         {
-                            gm.board[i, j].gameObject.SetActive(true);
+                            for (int j = 0; j < 5; j++)
+                            {
+                                gm.board[i, j].gameObject.SetActive(true);
+                            }
                         }
                     }
                 }
             }
+            hitOnce = true;
+            createTempScore(scoreValue * multiplier * gm.desperadoMult);
+            gm.updateScore(scoreValue * multiplier * gm.desperadoMult);
+
+            if (durable)
+            {
+                durable = false;
+                updateBrickType(brickType);
+            }
+            else if (unbreakable)
+            {
+                updateBrickType(brickType);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
-        hitOnce = true;
-        gm.updateScore((scoreValue * multiplier));
-        if (durable)
+    }
+    void createTempScore(float val)
+    {
+        tempVal = val;
+        if (child == null)
         {
-            durable = false;
-            updateBrickType(brickType);
-        }
-        else if (unbreakable)
-        {
-            updateBrickType(brickType);
+            child = Instantiate(tempScoreShower, cam.WorldToScreenPoint(transform.position), Quaternion.identity);
+            child.transform.SetParent(canvasObject.transform);
+            child.GetComponent<ScoreScript>().SetScoreAndStart(Mathf.RoundToInt(tempVal));
         }
         else
         {
-            gameObject.SetActive(false);
+            child.GetComponent<ScoreScript>().newTarget(Mathf.RoundToInt(tempVal));
         }
     }
 }

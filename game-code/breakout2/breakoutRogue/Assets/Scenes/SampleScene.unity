@@ -168,6 +168,9 @@ MonoBehaviour:
   rend: {fileID: 17632743}
   posY: 0
   posX: 2
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -323,6 +326,9 @@ MonoBehaviour:
   rend: {fileID: 29787210}
   posY: 2
   posX: 2
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -478,6 +484,9 @@ MonoBehaviour:
   rend: {fileID: 41704382}
   posY: 1
   posX: 7
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -742,7 +751,7 @@ RectTransform:
   m_GameObject: {fileID: 55737047}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2068945985}
@@ -831,8 +840,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Round 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1240,8 +1249,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Rerolls: 12'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1502,6 +1511,9 @@ MonoBehaviour:
   rend: {fileID: 170863890}
   posY: 4
   posX: 3
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -1865,6 +1877,9 @@ MonoBehaviour:
   rend: {fileID: 218503339}
   posY: 0
   posX: 5
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -2007,6 +2022,7 @@ MonoBehaviour:
   ball: {fileID: 3551505832765523788, guid: 7d22be734311841429efb25bc22a9120, type: 3}
   rerolls: {fileID: 142206786}
   paddle: {fileID: 1772892126}
+  paddleText: {fileID: 378951476}
   gameRunning: 0
   paddleHits: 15
   defaultPaddle: 15
@@ -2124,6 +2140,9 @@ MonoBehaviour:
   rend: {fileID: 251865022}
   posY: 3
   posX: 8
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -2488,6 +2507,9 @@ MonoBehaviour:
   rend: {fileID: 272970619}
   posY: 1
   posX: 6
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -2779,6 +2801,9 @@ MonoBehaviour:
   rend: {fileID: 296027630}
   posY: 2
   posX: 5
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -2911,7 +2936,7 @@ RectTransform:
   m_GameObject: {fileID: 313362525}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1099372318}
@@ -3101,7 +3126,7 @@ RectTransform:
   m_GameObject: {fileID: 360685037}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 456805460}
@@ -3178,6 +3203,9 @@ MonoBehaviour:
   rend: {fileID: 365599466}
   posY: 0
   posX: 4
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -3284,6 +3312,142 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &378951474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 378951475}
+  - component: {fileID: 378951477}
+  - component: {fileID: 378951476}
+  m_Layer: 5
+  m_Name: paddle bounces
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &378951475
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378951474}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 793616255}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 400}
+  m_SizeDelta: {x: 400, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &378951476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378951474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Paddle Bounces: 15'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278255433
+  m_fontColor: {r: 0.28449082, g: 1, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 30
+  m_fontSizeBase: 30
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &378951477
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378951474}
+  m_CullTransparentMesh: 1
 --- !u!1 &385477172
 GameObject:
   m_ObjectHideFlags: 0
@@ -3333,6 +3497,9 @@ MonoBehaviour:
   rend: {fileID: 385477176}
   posY: 3
   posX: 2
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -3643,10 +3810,10 @@ RectTransform:
   - {fileID: 1745065198}
   m_Father: {fileID: 793616255}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1200, y: -600}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &400445352
 GameObject:
@@ -3697,6 +3864,9 @@ MonoBehaviour:
   rend: {fileID: 400445356}
   posY: 2
   posX: 0
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -3928,6 +4098,9 @@ MonoBehaviour:
   rend: {fileID: 448723867}
   posY: 1
   posX: 1
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -4428,6 +4601,9 @@ MonoBehaviour:
   rend: {fileID: 496760938}
   posY: 2
   posX: 8
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -4615,7 +4791,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 0}
+  m_BackGroundColor: {r: 0.2786296, g: 0.31132078, b: 0.23936456, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4720,6 +4896,9 @@ MonoBehaviour:
   rend: {fileID: 546719420}
   posY: 4
   posX: 4
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -5007,6 +5186,9 @@ MonoBehaviour:
   rend: {fileID: 590304579}
   posY: 3
   posX: 7
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -5382,6 +5564,9 @@ MonoBehaviour:
   rend: {fileID: 670149708}
   posY: 4
   posX: 7
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -5514,7 +5699,7 @@ RectTransform:
   m_GameObject: {fileID: 670864815}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1809525901}
@@ -5590,6 +5775,9 @@ MonoBehaviour:
   rend: {fileID: 706492068}
   posY: 1
   posX: 4
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -6149,6 +6337,9 @@ MonoBehaviour:
   rend: {fileID: 787136145}
   posY: 3
   posX: 4
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -6304,6 +6495,9 @@ MonoBehaviour:
   rend: {fileID: 789017109}
   posY: 0
   posX: 3
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -6507,6 +6701,7 @@ RectTransform:
   - {fileID: 400190920}
   - {fileID: 1056962908}
   - {fileID: 1394391555}
+  - {fileID: 378951475}
   - {fileID: 95682070}
   - {fileID: 142206785}
   - {fileID: 1440793995}
@@ -6546,7 +6741,7 @@ RectTransform:
   m_GameObject: {fileID: 797693271}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1174525665}
@@ -6622,6 +6817,9 @@ MonoBehaviour:
   rend: {fileID: 877894891}
   posY: 0
   posX: 0
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -6853,6 +7051,9 @@ MonoBehaviour:
   rend: {fileID: 925703601}
   posY: 1
   posX: 8
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -7084,6 +7285,9 @@ MonoBehaviour:
   rend: {fileID: 943878348}
   posY: 3
   posX: 5
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -7315,6 +7519,9 @@ MonoBehaviour:
   rend: {fileID: 947211205}
   posY: 2
   posX: 1
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -7602,6 +7809,9 @@ MonoBehaviour:
   rend: {fileID: 1022619209}
   posY: 0
   posX: 1
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -7757,6 +7967,9 @@ MonoBehaviour:
   rend: {fileID: 1024855063}
   posY: 3
   posX: 1
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -8380,6 +8593,9 @@ MonoBehaviour:
   rend: {fileID: 1070739168}
   posY: 0
   posX: 6
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -8807,6 +9023,9 @@ MonoBehaviour:
   rend: {fileID: 1147799983}
   posY: 2
   posX: 7
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -8962,6 +9181,9 @@ MonoBehaviour:
   rend: {fileID: 1165243637}
   posY: 4
   posX: 6
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -9252,6 +9474,9 @@ MonoBehaviour:
   rend: {fileID: 1181904884}
   posY: 4
   posX: 8
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -9483,6 +9708,9 @@ MonoBehaviour:
   rend: {fileID: 1190384622}
   posY: 3
   posX: 0
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -9638,6 +9866,9 @@ MonoBehaviour:
   rend: {fileID: 1192029185}
   posY: 2
   posX: 3
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -9793,6 +10024,9 @@ MonoBehaviour:
   rend: {fileID: 1225913253}
   posY: 2
   posX: 6
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -9948,6 +10182,9 @@ MonoBehaviour:
   rend: {fileID: 1247615446}
   posY: 1
   posX: 3
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -10178,6 +10415,9 @@ MonoBehaviour:
   rend: {fileID: 1373398874}
   posY: 1
   posX: 0
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -10333,6 +10573,9 @@ MonoBehaviour:
   rend: {fileID: 1381832007}
   posY: 0
   posX: 7
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -10498,8 +10741,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 0/100033333333
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10761,6 +11004,9 @@ MonoBehaviour:
   rend: {fileID: 1405065076}
   posY: 2
   posX: 4
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -11058,8 +11304,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Wave 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
+  m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -12730,6 +12976,9 @@ MonoBehaviour:
   rend: {fileID: 1845893765}
   posY: 4
   posX: 1
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -12885,6 +13134,9 @@ MonoBehaviour:
   rend: {fileID: 1855476490}
   posY: 4
   posX: 2
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13040,6 +13292,9 @@ MonoBehaviour:
   rend: {fileID: 1936549690}
   posY: 0
   posX: 8
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13195,6 +13450,9 @@ MonoBehaviour:
   rend: {fileID: 1941591401}
   posY: 1
   posX: 2
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13350,6 +13608,9 @@ MonoBehaviour:
   rend: {fileID: 1963171292}
   posY: 1
   posX: 5
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13505,6 +13766,9 @@ MonoBehaviour:
   rend: {fileID: 1976482338}
   posY: 4
   posX: 5
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13660,6 +13924,9 @@ MonoBehaviour:
   rend: {fileID: 2008383686}
   posY: 3
   posX: 3
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -13929,7 +14196,7 @@ RectTransform:
   m_GameObject: {fileID: 2058657263}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 467256677}
@@ -14143,6 +14410,9 @@ MonoBehaviour:
   rend: {fileID: 2092380803}
   posY: 4
   posX: 0
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0
@@ -14298,6 +14568,9 @@ MonoBehaviour:
   rend: {fileID: 2107867597}
   posY: 3
   posX: 6
+  tempScoreShower: {fileID: 4982148855223799143, guid: 6ce240082fb5bc644bb2e1ef73d3d2b3, type: 3}
+  cam: {fileID: 519420031}
+  canvasObject: {fileID: 793616251}
   brickType: -1
   durable: 0
   unbreakable: 0

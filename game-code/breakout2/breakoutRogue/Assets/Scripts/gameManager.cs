@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class gameManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class gameManager : MonoBehaviour
     [SerializeField] GameObject ball;
     [SerializeField] TMP_Text rerolls;
     [SerializeField] GameObject paddle;
+    [SerializeField] TMP_Text paddleText;
     int availableRerolls = 12;
     int currentScore = 0;
     int scoreToBeat = 1000;
@@ -52,7 +54,7 @@ public class gameManager : MonoBehaviour
     }
     public void updateScore(float value)
     {
-        currentScore += Mathf.RoundToInt(value * desperadoMult);
+        currentScore += Mathf.RoundToInt(value);
         score.text = currentScore + "/" + scoreToBeat;
     }
     public int selectRandomBrick(int currentValue)
@@ -165,6 +167,7 @@ public class gameManager : MonoBehaviour
                     gainRerolls(12);
                     paddle.SetActive(true);
                     paddleHits = defaultPaddle;
+                    updatePaddleText();
                     roundNumber = 1;
                     round.text = "Round " + roundNumber;
                     paddle.transform.position = new Vector3(0, 0.2246f, 0);
@@ -183,6 +186,7 @@ public class gameManager : MonoBehaviour
         {
             paddle.SetActive(true);
             paddleHits = defaultPaddle;
+            updatePaddleText();
             roundNumber++;
             round.text = "Round " + roundNumber;
             paddle.transform.position = new Vector3(0, 0.2246f, 0);
@@ -281,10 +285,12 @@ public class gameManager : MonoBehaviour
         {
             paddle.SetActive(false);
         }
+        updatePaddleText();
     }
     public void fixPaddle()
     {
         paddleHits = defaultPaddle;
+        updatePaddleText();
         paddle.SetActive(true);
     }
     public int[] shuffleArray(int[] target)
@@ -302,5 +308,9 @@ public class gameManager : MonoBehaviour
     public void FullMetalJacketChange()
     {
         paddle.GetComponent<paddleScript>().speed *= 2;
+    }
+    void updatePaddleText()
+    {
+        paddleText.text = "Paddle Bounces: " + paddleHits;
     }
 }
