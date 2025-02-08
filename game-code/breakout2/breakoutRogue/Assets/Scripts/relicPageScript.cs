@@ -54,31 +54,35 @@ public class relicPageScript : MonoBehaviour
     }
     public void selectRelic()
     {
-        switch (relicNumber)
+        if (operatorScript.waitForSelection)
         {
-            case 0:
-                gm.bigDonut = true;
-                break;
-            case 1:
-                gm.desperadoMult = 2;
-                gm.defaultPaddle -= 10;
-                gm.fixPaddle();
-                break;
-            case 2:
-                gm.faultyEquipment = true;
-                break;
-            case 3:
-                gm.FullMetalJacketChange();
-                gm.defaultPaddle += 10;
-                gm.fixPaddle();
-                break;
-            case 4:
-                gm.gainRerolls(32);
-                break;
-            case 5:
-                gm.utilityBelt = true;
-                break;
+            operatorScript.waitForSelection = false;
+            switch (relicNumber)
+            {
+                case 0:
+                    gm.bigDonut = true;
+                    break;
+                case 1:
+                    gm.desperadoMult = 2;
+                    gm.defaultPaddle -= 10;
+                    gm.fixPaddle();
+                    break;
+                case 2:
+                    gm.faultyEquipment = true;
+                    break;
+                case 3:
+                    gm.FullMetalJacketChange();
+                    gm.defaultPaddle += 10;
+                    gm.fixPaddle();
+                    break;
+                case 4:
+                    gm.gainRerolls(32);
+                    break;
+                case 5:
+                    gm.utilityBelt = true;
+                    break;
+            }
+            operatorScript.RelicChosen(relicNumber, Resources.Load<Sprite>(imgSource[relicNumber]));
         }
-        operatorScript.RelicChosen(relicNumber, Resources.Load<Sprite>(imgSource[relicNumber]));
     }
 }

@@ -284,6 +284,7 @@ public class gameManager : MonoBehaviour
         if (paddleHits <= 0)
         {
             paddle.SetActive(false);
+            paddleHits = 0;
         }
         updatePaddleText();
     }

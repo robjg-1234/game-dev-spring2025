@@ -34,7 +34,7 @@ public class ScoreScript : MonoBehaviour
             {
                 temp++;
                 scoreLoading.text = "+" + temp;
-                yield return new WaitForSeconds(0.001f);
+                yield return new WaitForSeconds(0.0001f);
             }
             else
             {
@@ -46,7 +46,7 @@ public class ScoreScript : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (scoreLoading.color.a > 0)
         {
-            scoreLoading.color = new Color(scoreLoading.color.r, scoreLoading.color.g, scoreLoading.color.b, scoreLoading.color.a - 0.01f);
+            scoreLoading.color = new Color(scoreLoading.color.r, scoreLoading.color.g, scoreLoading.color.b, scoreLoading.color.a - 5f * Time.deltaTime);
             yield return null;
         }
         Destroy(gameObject);

@@ -122,7 +122,7 @@ public class choiceScript : MonoBehaviour
     {
         while(gameObject.transform.localScale.x > 0)
         {
-            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 0.01f, gameObject.transform.localScale.y - 0.01f, gameObject.transform.localScale.z - 0.01f);
+            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 5f * Time.deltaTime, gameObject.transform.localScale.y - 5f * Time.deltaTime, gameObject.transform.localScale.z - 5f * Time.deltaTime);
             yield return null;
         }
         panel.color = Color.white;

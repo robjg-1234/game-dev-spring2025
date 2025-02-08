@@ -13,6 +13,7 @@ public class relicManagerScript : MonoBehaviour
     int[] availableRelics = new int[] { 0, 1, 2, 3, 4, 5 };
     int selectionNumber = 0;
     gameManager gm;
+    public bool waitForSelection = false;
     private void Start()
     {
         gm = gameManager.instance;
@@ -42,6 +43,7 @@ public class relicManagerScript : MonoBehaviour
     }
     public void ShowRelics()
     {
+        waitForSelection = true;
         int passes = 0;
         int[] tempRelics = availableRelics;
         tempRelics = gm.shuffleArray(tempRelics);
@@ -79,9 +81,9 @@ public class relicManagerScript : MonoBehaviour
     {
         while (option1.transform.localScale.x > 0)
         {
-            option1.transform.localScale = new Vector3(option1.transform.localScale.x - 0.01f, option1.transform.localScale.y - 0.01f, option1.transform.localScale.z - 0.01f);
-            option2.transform.localScale = new Vector3(option2.transform.localScale.x - 0.01f, option2.transform.localScale.y - 0.01f, option2.transform.localScale.z - 0.01f);
-            option3.transform.localScale = new Vector3(option3.transform.localScale.x - 0.01f, option3.transform.localScale.y - 0.01f, option3.transform.localScale.z - 0.01f);
+            option1.transform.localScale = new Vector3(option1.transform.localScale.x - 5f * Time.deltaTime, option1.transform.localScale.y - 5f * Time.deltaTime, option1.transform.localScale.z - 5f * Time.deltaTime);
+            option2.transform.localScale = new Vector3(option2.transform.localScale.x - 5f * Time.deltaTime, option2.transform.localScale.y - 5f * Time.deltaTime, option2.transform.localScale.z - 5f * Time.deltaTime);
+            option3.transform.localScale = new Vector3(option3.transform.localScale.x - 5f * Time.deltaTime, option3.transform.localScale.y - 5f * Time.deltaTime, option3.transform.localScale.z - 5f * Time.deltaTime);
             yield return null;
         }
         option1.transform.localScale = Vector3.zero;
@@ -100,9 +102,9 @@ public class relicManagerScript : MonoBehaviour
         option3.SetActive(true);
         while (option1.transform.localScale.x < 1)
         {
-            option1.transform.localScale = new Vector3(option1.transform.localScale.x + 0.01f, option1.transform.localScale.y + 0.01f, option1.transform.localScale.z + 0.01f);
-            option2.transform.localScale = new Vector3(option2.transform.localScale.x + 0.01f, option2.transform.localScale.y + 0.01f, option2.transform.localScale.z + 0.01f);
-            option3.transform.localScale = new Vector3(option3.transform.localScale.x + 0.01f, option3.transform.localScale.y + 0.01f, option3.transform.localScale.z + 0.01f);
+            option1.transform.localScale = new Vector3(option1.transform.localScale.x + 5f * Time.deltaTime, option1.transform.localScale.y + 5f * Time.deltaTime, option1.transform.localScale.z + 5f * Time.deltaTime);
+            option2.transform.localScale = new Vector3(option2.transform.localScale.x + 5f * Time.deltaTime, option2.transform.localScale.y + 5f * Time.deltaTime, option2.transform.localScale.z + 5f * Time.deltaTime);
+            option3.transform.localScale = new Vector3(option3.transform.localScale.x + 5f * Time.deltaTime, option3.transform.localScale.y + 5f * Time.deltaTime, option3.transform.localScale.z + 5f * Time.deltaTime);
             yield return null;
         }
         option1.transform.localScale = new Vector3(1, 1, 1);

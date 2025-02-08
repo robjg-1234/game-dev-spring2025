@@ -88,7 +88,7 @@ public class roundManager : MonoBehaviour
     {
         while (roundSummary.transform.localScale.x > 0)
         {
-            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x-0.01f, roundSummary.transform.localScale.y - 0.01f, roundSummary.transform.localScale.z - 0.01f);
+            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x-5f * Time.deltaTime, roundSummary.transform.localScale.y - 5f * Time.deltaTime, roundSummary.transform.localScale.z - 5f * Time.deltaTime);
             yield return null;
         }
         roundSummary.SetActive(false);
@@ -110,7 +110,7 @@ public class roundManager : MonoBehaviour
         roundSummary.SetActive(true);
         while (roundSummary.transform.localScale.x < 1)
         {
-            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x + 0.01f, roundSummary.transform.localScale.y + 0.01f, roundSummary.transform.localScale.z + 0.01f);
+            roundSummary.transform.localScale = new Vector3(roundSummary.transform.localScale.x + 5f * Time.deltaTime, roundSummary.transform.localScale.y + 5f * Time.deltaTime, roundSummary.transform.localScale.z + 5f * Time.deltaTime);
             yield return null;
         }
         roundSummary.transform.localScale = new Vector3(1,1,1);
@@ -123,9 +123,9 @@ public class roundManager : MonoBehaviour
         option3.SetActive(true);
         while (option1.transform.localScale.x < 1)
         {
-            option1.transform.localScale = new Vector3(option1.transform.localScale.x + 0.01f, option1.transform.localScale.y + 0.01f, option1.transform.localScale.z + 0.01f);
-            option2.transform.localScale = new Vector3(option2.transform.localScale.x + 0.01f, option2.transform.localScale.y + 0.01f, option2.transform.localScale.z + 0.01f);
-            option3.transform.localScale = new Vector3(option3.transform.localScale.x + 0.01f, option3.transform.localScale.y + 0.01f, option3.transform.localScale.z + 0.01f);
+            option1.transform.localScale = new Vector3(option1.transform.localScale.x + 5f * Time.deltaTime, option1.transform.localScale.y + 5f * Time.deltaTime, option1.transform.localScale.z + 5f * Time.deltaTime);
+            option2.transform.localScale = new Vector3(option2.transform.localScale.x + 5f * Time.deltaTime, option2.transform.localScale.y + 5f * Time.deltaTime, option2.transform.localScale.z + 5f * Time.deltaTime);
+            option3.transform.localScale = new Vector3(option3.transform.localScale.x + 5f * Time.deltaTime, option3.transform.localScale.y + 5f * Time.deltaTime, option3.transform.localScale.z + 5f * Time.deltaTime);
             yield return null;
         }
         option1.transform.localScale = new Vector3(1, 1, 1);
