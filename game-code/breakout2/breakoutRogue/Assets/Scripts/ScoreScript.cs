@@ -19,22 +19,36 @@ public class ScoreScript : MonoBehaviour
     }
     public void newTarget(int myTarget)
     {
-        target = myTarget;
+        target += myTarget;
     }
     IEnumerator CountUp()
     {
         int temp = 0;
-        if (target > 200000)
-        {
-            temp = target / 2;
-        }
         while (temp < target)
         {
-            if (target < 7500)
+            if ((target - temp) > 100000)
             {
-                temp++;
+                temp += 50000;
                 scoreLoading.text = "+" + temp;
-                yield return new WaitForSeconds(0.0001f);
+                yield return null;
+            }
+            else if ((target - temp) > 10000)
+            {
+                temp += 1000;
+                scoreLoading.text = "+" + temp;
+                yield return null;
+            }
+            else if ((target - temp) > 2500)
+            {
+                temp += 100;
+                scoreLoading.text = "+" + temp;
+                yield return null;
+            }
+            else if ((target - temp) > 500)
+            {
+                temp += 10;
+                scoreLoading.text = "+" + temp;
+                yield return null;
             }
             else
             {
@@ -42,6 +56,7 @@ public class ScoreScript : MonoBehaviour
                 scoreLoading.text = "+" + temp;
                 yield return null;
             }
+
         }
         yield return new WaitForSeconds(1);
         while (scoreLoading.color.a > 0)

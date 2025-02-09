@@ -11,6 +11,7 @@ public class choiceScript : MonoBehaviour
     [SerializeField] Image brickColor;
     [SerializeField] Image panel;
     gameManager gm;
+    bool alreadyUsed = false;
     public int type = -1;
     private void Start()
     {
@@ -104,8 +105,11 @@ public class choiceScript : MonoBehaviour
     }
     public void selected() 
     {
-        gm.changeSelection(this);
-        panel.color = new Color(0.9257517f, 0.9433962f, 0.8321466f);
+        if (!alreadyUsed)
+        {
+            gm.changeSelection(this);
+            panel.color = new Color(0.9257517f, 0.9433962f, 0.8321466f);
+        }
     }
     public void unSelect(int action)
     {
@@ -120,6 +124,7 @@ public class choiceScript : MonoBehaviour
     }
     IEnumerator CloseThisWindow()
     {
+        alreadyUsed = true;
         while(gameObject.transform.localScale.x > 0)
         {
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 5f * Time.deltaTime, gameObject.transform.localScale.y - 5f * Time.deltaTime, gameObject.transform.localScale.z - 5f * Time.deltaTime);
@@ -128,6 +133,7 @@ public class choiceScript : MonoBehaviour
         panel.color = Color.white;
         gameObject.SetActive(false);
         gameObject.transform.localScale = Vector3.zero;
+        alreadyUsed = false;
     }
 
     
