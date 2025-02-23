@@ -14,7 +14,6 @@ public class playerScript : MonoBehaviour
     float friction = 30f;
     float jumpVelocity = 0;
     float jumpStrength = 10f;
-    float wallJumpStrength = 7f;
     float gravity = -10f;
     float jumpBuffer = 0;
     CharacterController cc;
@@ -324,7 +323,7 @@ public class playerScript : MonoBehaviour
         else if (other.transform.CompareTag("coin"))
         {
             Destroy(other.gameObject);
-
+            gm.CoinCollected();
         }
     }
     private void OnTriggerExit(Collider other)
