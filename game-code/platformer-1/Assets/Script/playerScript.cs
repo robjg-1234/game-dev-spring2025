@@ -4,8 +4,10 @@ using UnityEngine.InputSystem.LowLevel;
 
 public class playerScript : MonoBehaviour
 {
+    [SerializeField] Renderer rend;
     [SerializeField] GameObject underCam;
     [SerializeField] GameObject mainCam;
+    Color defaultColor;
     GameObject lastWall;
     GameObject currentWall;
     float velocity = 0;
@@ -40,6 +42,7 @@ public class playerScript : MonoBehaviour
         gm = managerScript.instance;
         cc = GetComponent<CharacterController>();
         gm.gameWon += stopGame;
+        defaultColor = rend.material.color;
     }
 
     // Update is called once per frame
@@ -242,6 +245,11 @@ public class playerScript : MonoBehaviour
                     {
                         velocity -= characterSpeed * Time.deltaTime;
                     }
+                    if (dashCooldown <= 0)
+                    {
+                        rend.material.color = defaultColor;
+                        dashCooldown = 0;
+                    }
                 }
                 else
                 {
@@ -253,6 +261,7 @@ public class playerScript : MonoBehaviour
                     }
                     else
                     {
+                        rend.material.color = defaultColor;
                         dashCooldown = 0;
                     }
                 }
@@ -262,6 +271,7 @@ public class playerScript : MonoBehaviour
                     {
                         if (xAxis != 0 || zAxis != 0)
                         {
+                            rend.material.color = Color.red;
                             movement += fixedRight.normalized * xAxis;
                             movement += fixedForward.normalized * zAxis;
                             lastX = xAxis;
