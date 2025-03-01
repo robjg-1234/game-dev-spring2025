@@ -250,6 +250,9 @@ MonoBehaviour:
   verticalShieldDistance: 0.55
   shield: {fileID: 4916102315886749808}
   shieldrend: {fileID: 6250885322618379674}
+  passableGround:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!50 &6691409677857861740
 Rigidbody2D:
   serializedVersion: 5

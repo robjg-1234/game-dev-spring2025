@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,13 +15,14 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float verticalShieldDistance;
     [SerializeField] GameObject shield;
     [SerializeField] SpriteRenderer shieldrend;
+    [SerializeField] LayerMask passableGround;
+    GameManager gameManager;
     Rigidbody2D rb;
     Color defaultShieldColor;
-    float yVelocity = 0;
+    public float yVelocity = 0;
     float gravity = 10f;
     float jumpBuffer = 0f;
     float velocity = 0;
-    bool shielding = false;
     bool jumped = false;
     float speed;
     float yAxis = 0;
@@ -32,14 +34,29 @@ public class PlayerScript : MonoBehaviour
     float direction = 0;
     float coyoteTime = 0.1f;
     float fallTime = 0f;
+    float jumpingTimer = 0f;
     ArrayList usedDir = new ArrayList() { };
+    bool respawning = true;
+    bool inSpring = false;
+    bool unableToJumpStop = false;
+    public bool onSolidGround = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameManager = GameManager.instance;
         defaultShieldColor = shieldrend.color;
         speed = 4f;
         rb = GetComponent<Rigidbody2D>();
+        gameManager.currentPlayerIteration = this;
     }
+    private void OnDestroy()
+    {
+        if (gameManager != null)
+        {
+            gameManager.RespawnPlayer();
+        }
+    }
+
     private void Update()
     {
 
@@ -49,7 +66,7 @@ public class PlayerScript : MonoBehaviour
         {
             jumpBuffer = 0.2f;
         }
-        if (Input.GetKeyUp(KeyCode.Space) && (usedDir.Count == 0))
+        if (Input.GetKeyUp(KeyCode.Space) && (usedDir.Count == 0) && !unableToJumpStop && jumped)
         {
             jumpStopBuffer = true;
         }
@@ -75,6 +92,14 @@ public class PlayerScript : MonoBehaviour
         }
         if (!IsGrounded())
         {
+            if (jumpingTimer > 0)
+            {
+                jumpingTimer -= Time.deltaTime;
+            }
+            else
+            {
+                jumpingTimer = 0;
+            }
             fallTime += Time.deltaTime;
             if (fallTime <= coyoteTime && !jumped && jumpBuffer > 0)
             {
@@ -82,8 +107,16 @@ public class PlayerScript : MonoBehaviour
                 yVelocity = 5.5f;
                 jumpBuffer = 0;
             }
-            speed = 6f;
-            if (yVelocity > 3 && jumpStopBuffer)
+            if (speed > 6f)
+            {
+                speed -= 8f * Time.deltaTime;
+            }
+            else
+            {
+                speed = 6f;
+            }
+
+            if (yVelocity > 0 && jumpStopBuffer && jumpingTimer <= 0)
             {
                 yVelocity = 0;
                 jumpStopBuffer = false;
@@ -96,12 +129,18 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
+            respawning = false;
             jumped = false;
             fallTime = 0;
             jumpStopBuffer = false;
-            yVelocity = 0;
+            unableToJumpStop = false;
+            if (!inSpring)
+            {
+                yVelocity = 0;
+            }
             if (jumpBuffer > 0)
             {
+                jumpingTimer = 0.1f;
                 jumped = true;
                 yVelocity = 5.5f;
                 jumpBuffer = 0;
@@ -118,13 +157,31 @@ public class PlayerScript : MonoBehaviour
             {
                 if (!IsGrounded())
                 {
-                    velocity += xAxis * 16f * Time.deltaTime;
-                    velocity = Mathf.Clamp(velocity, speed * -1, speed);
+                    if (velocity > speed * 1.2f)
+                    {
+                        velocity -= 12f * Time.deltaTime;
+                    }
+                    else if (velocity < speed * 1.2f * -1)
+                    {
+                        velocity += 12f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        velocity += speed * 2 * xAxis * Time.deltaTime;
+                    }
                 }
                 else
                 {
-                    speed = 4f;
-                    velocity = xAxis * speed;
+                    if (speed > 4f)
+                    {
+                        speed -= 100f * Time.deltaTime;
+                        velocity = speed * xAxis;
+                    }
+                    else
+                    {
+                        speed = 4f;
+                        velocity = xAxis * speed;
+                    }
                 }
             }
             else
@@ -156,11 +213,19 @@ public class PlayerScript : MonoBehaviour
         if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, ground))
         {
             usedDir.Clear();
+            onSolidGround = true;
             return true;
 
         }
+        else if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, passableGround))
+        {
+            usedDir.Clear();
+            onSolidGround = false;
+            return true;
+        }
         else
         {
+            onSolidGround = false;
             return false;
         }
     }
@@ -261,6 +326,8 @@ public class PlayerScript : MonoBehaviour
                     }
                     directionFlipTimer = 0.25f;
                     direction = xAxis * -1;
+                    speed += Mathf.Abs(yVelocity);
+                    yVelocity = yVelocity / 2;
                     jumpStopBuffer = false;
                 }
             }
@@ -272,12 +339,73 @@ public class PlayerScript : MonoBehaviour
         {
             inSpike = true;
         }
+        else if (collision.transform.CompareTag("Checkpoint"))
+        {
+            collision.transform.GetComponent<CheckpointScript>().SelectCheckpoint();
+        }
+        else if (collision.transform.CompareTag("room"))
+        {
+            gameManager.changeCamera(collision.transform.GetComponent<CameraScript>(), respawning);
+        }
+        else if (collision.transform.CompareTag("Lava"))
+        {
+            Destroy(gameObject);
+        }
+        else if (collision.transform.CompareTag("Replenisher"))
+        {
+            if (usedDir.Count > 0)
+            {
+                ReplenisherScript hitReplenisher = collision.gameObject.GetComponent<ReplenisherScript>();
+                if (!hitReplenisher.isHit)
+                {
+                    usedDir.Clear();
+                    hitReplenisher.StartCooldown();
+                }
+            }
+        }
+        else if (collision.transform.CompareTag("HexaPiece"))
+        {
+            HexaPiece grabbedPiece = collision.gameObject.GetComponent<HexaPiece>();
+            grabbedPiece.SelectTarget(this.gameObject);
+        }
+        else if (collision.transform.CompareTag("SecretRoom"))
+        {
+            StartCoroutine(collision.gameObject.GetComponent<SecretRooms>().revealRoom());
+        }
+        else if (collision.transform.CompareTag("Finish"))
+        {
+            gameManager.winGame();
+            Destroy(gameObject);
+        }
+
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("spike"))
         {
             inSpike = false;
+        }
+        if (collision.transform.CompareTag("Spring"))
+        {
+            inSpring = false;
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag("spike"))
+        {
+            inSpike = true;
+        }
+        if (collision.transform.CompareTag("Spring"))
+        {
+            inSpring = true;
+            unableToJumpStop = true;
+            yVelocity = 12f;
+        }
+        else if (collision.transform.CompareTag("Transition"))
+        {
+            unableToJumpStop = true;
+            yVelocity = 5.5f;
         }
     }
 }
