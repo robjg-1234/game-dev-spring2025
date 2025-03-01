@@ -376,6 +376,7 @@ public class PlayerScript : MonoBehaviour
         {
             gameManager.winGame();
             Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
 
     }

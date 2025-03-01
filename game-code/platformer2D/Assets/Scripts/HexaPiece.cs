@@ -23,7 +23,7 @@ public class HexaPiece : MonoBehaviour
     {
         if (target != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.005f);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 5f*Time.deltaTime);
             if (target.onSolidGround)
             {
                 collectionTimer -= Time.deltaTime;
