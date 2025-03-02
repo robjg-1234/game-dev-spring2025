@@ -36,6 +36,7 @@ public class PlayerScript : MonoBehaviour
     float fallTime = 0f;
     float jumpingTimer = 0f;
     ArrayList usedDir = new ArrayList() { };
+    bool transitioning = false;
     bool respawning = true;
     bool inSpring = false;
     bool unableToJumpStop = false;
@@ -82,6 +83,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
+
         if (jumpBuffer > 0)
         {
             jumpBuffer -= Time.deltaTime;
@@ -146,47 +148,54 @@ public class PlayerScript : MonoBehaviour
                 jumpBuffer = 0;
             }
         }
-        if (directionFlipTimer > 0f)
+        if (transitioning)
         {
-            directionFlipTimer -= Time.deltaTime;
             velocity = direction * speed;
         }
         else
         {
-            if (xAxis != 0)
+            if (directionFlipTimer > 0f)
             {
-                if (!IsGrounded())
+                directionFlipTimer -= Time.deltaTime;
+                velocity = direction * speed;
+            }
+            else
+            {
+                if (xAxis != 0)
                 {
-                    if (velocity > speed * 1.2f)
+                    if (!IsGrounded())
                     {
-                        velocity -= 12f * Time.deltaTime;
-                    }
-                    else if (velocity < speed * 1.2f * -1)
-                    {
-                        velocity += 12f * Time.deltaTime;
+                        if (velocity > speed * 1.2f)
+                        {
+                            velocity -= 12f * Time.deltaTime;
+                        }
+                        else if (velocity < speed * 1.2f * -1)
+                        {
+                            velocity += 12f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            velocity += speed * 2 * xAxis * Time.deltaTime;
+                        }
                     }
                     else
                     {
-                        velocity += speed * 2 * xAxis * Time.deltaTime;
+                        if (speed > 4f)
+                        {
+                            speed -= 100f * Time.deltaTime;
+                            velocity = speed * xAxis;
+                        }
+                        else
+                        {
+                            speed = 4f;
+                            velocity = xAxis * speed;
+                        }
                     }
                 }
                 else
                 {
-                    if (speed > 4f)
-                    {
-                        speed -= 100f * Time.deltaTime;
-                        velocity = speed * xAxis;
-                    }
-                    else
-                    {
-                        speed = 4f;
-                        velocity = xAxis * speed;
-                    }
+                    velocity = 0;
                 }
-            }
-            else
-            {
-                velocity = 0;
             }
         }
         rb.linearVelocity = new Vector2(velocity, yVelocity);
@@ -378,6 +387,14 @@ public class PlayerScript : MonoBehaviour
             Destroy(gameObject);
             Destroy(collision.gameObject);
         }
+        else if (collision.transform.CompareTag("HTransition"))
+        {
+            if (speed < 4f){
+                speed = 4f;
+            }
+            direction = xAxis;
+            transitioning = true;
+        }
 
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -389,6 +406,10 @@ public class PlayerScript : MonoBehaviour
         if (collision.transform.CompareTag("Spring"))
         {
             inSpring = false;
+        }
+        else if (collision.transform.CompareTag("HTransition"))
+        {
+            transitioning = false;
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -407,6 +428,10 @@ public class PlayerScript : MonoBehaviour
         {
             unableToJumpStop = true;
             yVelocity = 5.5f;
+        }
+        else if (collision.transform.CompareTag("HTransition"))
+        {
+            transitioning = true;
         }
     }
 }
