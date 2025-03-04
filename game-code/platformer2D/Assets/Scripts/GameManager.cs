@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text timer;
     [SerializeField] GameObject player;
     [SerializeField] TMP_Text deaths;
+    [SerializeField] GameObject tutorial;
     public static GameManager instance;
     CheckpointScript lastCheckpoint;
     Vector3 respawnPosition = new Vector3(-10f, 0.7f, 0);
@@ -101,6 +102,7 @@ public class GameManager : MonoBehaviour
 
     public void changeCamera(CameraScript newCamera, bool respawnFlag)
     {
+        
         if (respawnFlag)
         {
             if (newCamera != oldCamera)
@@ -112,6 +114,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            tutorial.SetActive(false);
             if (oldCamera != null)
             {
                 oldCamera.toggleCamera();

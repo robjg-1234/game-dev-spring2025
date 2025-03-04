@@ -10364,6 +10364,7 @@ MonoBehaviour:
   timer: {fileID: 1750103053}
   player: {fileID: 4946710410020013095, guid: 4f80b7cecc46d4a4899a2b38cd3d7d05, type: 3}
   deaths: {fileID: 870020408}
+  tutorial: {fileID: 439364010}
   oldCamera: {fileID: 1168594554}
   currentPlayerIteration: {fileID: 0}
   CoinCollected: 0
