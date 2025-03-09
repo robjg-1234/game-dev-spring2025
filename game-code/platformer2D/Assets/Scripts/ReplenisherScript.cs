@@ -21,8 +21,11 @@ public class ReplenisherScript : MonoBehaviour
     {
         if (cooldown> 0)
         {
-            spriteRenderer.color = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0.25f);
-            cooldown -= Time.deltaTime;
+            if (!gm.isPaused)
+            {
+                spriteRenderer.color = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0.25f);
+                cooldown -= Time.deltaTime;
+            }
         }
         else
         {

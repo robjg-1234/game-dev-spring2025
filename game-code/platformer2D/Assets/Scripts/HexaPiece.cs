@@ -23,14 +23,17 @@ public class HexaPiece : MonoBehaviour
     {
         if (target != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 5f*Time.deltaTime);
-            if (target.onSolidGround)
+            if (!gm.isPaused)
             {
-                collectionTimer -= Time.deltaTime;
-            }
-            if (collectionTimer < 0f)
-            {
-                Destroy(gameObject);
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 5f * Time.deltaTime);
+                if (target.onSolidGround)
+                {
+                    collectionTimer -= Time.deltaTime;
+                }
+                if (collectionTimer < 0f)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
         else

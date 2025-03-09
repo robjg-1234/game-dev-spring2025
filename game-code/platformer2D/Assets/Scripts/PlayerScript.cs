@@ -60,159 +60,178 @@ public class PlayerScript : MonoBehaviour
 
     private void Update()
     {
-
-        xAxis = Input.GetAxisRaw("Horizontal");
-        yAxis = Input.GetAxisRaw("Vertical");
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!gameManager.isPaused)
         {
-            jumpBuffer = 0.2f;
-        }
-        if (Input.GetKeyUp(KeyCode.Space) && (usedDir.Count == 0) && !unableToJumpStop && jumped)
-        {
-            jumpStopBuffer = true;
-        }
-        if (Input.GetKey(KeyCode.C))
-        {
-            HoldShield();
+            xAxis = Input.GetAxisRaw("Horizontal");
+            yAxis = Input.GetAxisRaw("Vertical");
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                jumpBuffer = 0.2f;
+            }
+            if (Input.GetKeyUp(KeyCode.Space) && (usedDir.Count == 0) && !unableToJumpStop && jumped)
+            {
+                jumpStopBuffer = true;
+            }
+            if (Input.GetKey(KeyCode.C))
+            {
+                HoldShield();
+            }
+            else
+            {
+                shield.SetActive(false);
+            }
         }
         else
         {
-            shield.SetActive(false);
+            if (Input.GetKeyUp(KeyCode.Space) && (usedDir.Count == 0) && !unableToJumpStop && jumped)
+            {
+                jumpStopBuffer = true;
+            }
         }
     }
     // Update is called once per frame
     private void FixedUpdate()
     {
-
-        if (jumpBuffer > 0)
+        if (!gameManager.isPaused)
         {
-            jumpBuffer -= Time.deltaTime;
-        }
-        else
-        {
-            jumpBuffer = 0;
-        }
-        if (!IsGrounded())
-        {
-            if (jumpingTimer > 0)
-            {
-                jumpingTimer -= Time.deltaTime;
-            }
-            else
-            {
-                jumpingTimer = 0;
-            }
-            fallTime += Time.deltaTime;
-            if (fallTime <= coyoteTime && !jumped && jumpBuffer > 0)
-            {
-                jumped = true;
-                yVelocity = 5.5f;
-                jumpBuffer = 0;
-            }
-            if (speed > 6f)
-            {
-                speed -= 8f * Time.deltaTime;
-            }
-            else
-            {
-                speed = 6f;
-            }
-
-            if (yVelocity > 0 && jumpStopBuffer && jumpingTimer <= 0)
-            {
-                yVelocity = 0;
-                jumpStopBuffer = false;
-            }
-            if (yVelocity > 0 && HeadHitter())
-            {
-                yVelocity = 0;
-            }
-            yVelocity -= gravity * Time.deltaTime;
-        }
-        else
-        {
-            respawning = false;
-            jumped = false;
-            fallTime = 0;
-            jumpStopBuffer = false;
-            unableToJumpStop = false;
-            if (!inSpring)
-            {
-                yVelocity = 0;
-            }
             if (jumpBuffer > 0)
             {
-                jumpingTimer = 0.1f;
-                jumped = true;
-                yVelocity = 5.5f;
+                jumpBuffer -= Time.deltaTime;
+            }
+            else
+            {
                 jumpBuffer = 0;
             }
-        }
-        if (transitioning)
-        {
-            velocity = direction * speed;
-        }
-        else
-        {
-            if (directionFlipTimer > 0f)
+            if (!IsGrounded())
             {
-                directionFlipTimer -= Time.deltaTime;
+                if (jumpingTimer > 0)
+                {
+                    jumpingTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    jumpingTimer = 0;
+                }
+                fallTime += Time.deltaTime;
+                if (fallTime <= coyoteTime && !jumped && jumpBuffer > 0)
+                {
+                    jumped = true;
+                    yVelocity = 6f;
+                    jumpBuffer = 0;
+                }
+                if (speed > 4.75f)
+                {
+                    speed -= 8f * Time.deltaTime;
+                }
+                else
+                {
+                    speed = 4.75f;
+                }
+
+                if (yVelocity > 0 && jumpStopBuffer && jumpingTimer <= 0)
+                {
+                    yVelocity = 0;
+                    jumpStopBuffer = false;
+                }
+                if (yVelocity > 0 && HeadHitter())
+                {
+                    yVelocity = 0;
+                }
+                if (yVelocity < 0)
+                {
+                    unableToJumpStop = true;
+                }
+                yVelocity -= gravity * Time.deltaTime;
+            }
+            else
+            {
+                respawning = false;
+                jumped = false;
+                fallTime = 0;
+                jumpStopBuffer = false;
+                unableToJumpStop = false;
+                if (!inSpring)
+                {
+                    yVelocity = 0;
+                }
+                if (jumpBuffer > 0)
+                {
+                    jumpingTimer = 0.1f;
+                    jumped = true;
+                    yVelocity = 6f;
+                    jumpBuffer = 0;
+                }
+            }
+            if (transitioning)
+            {
                 velocity = direction * speed;
             }
             else
             {
-                if (xAxis != 0)
+                if (directionFlipTimer > 0f)
                 {
-                    if (!IsGrounded())
+                    directionFlipTimer -= Time.deltaTime;
+                    velocity = direction * speed;
+                }
+                else
+                {
+                    if (xAxis != 0)
                     {
-                        if (velocity > speed * 1.2f)
+                        if (!IsGrounded())
                         {
-                            velocity -= 12f * Time.deltaTime;
-                        }
-                        else if (velocity < speed * 1.2f * -1)
-                        {
-                            velocity += 12f * Time.deltaTime;
+                            if (velocity > speed * 1.2f)
+                            {
+                                velocity -= 12f * Time.deltaTime;
+                            }
+                            else if (velocity < speed * 1.2f * -1)
+                            {
+                                velocity += 12f * Time.deltaTime;
+                            }
+                            else
+                            {
+                                velocity += speed * 1.4f * xAxis * Time.deltaTime;
+                            }
                         }
                         else
                         {
-                            velocity += speed * 2 * xAxis * Time.deltaTime;
+                            if (speed > 4f)
+                            {
+                                speed -= 100f * Time.deltaTime;
+                                velocity = speed * xAxis;
+                            }
+                            else
+                            {
+                                speed = 4f;
+                                velocity = xAxis * speed;
+                            }
                         }
                     }
                     else
                     {
-                        if (speed > 4f)
-                        {
-                            speed -= 100f * Time.deltaTime;
-                            velocity = speed * xAxis;
-                        }
-                        else
-                        {
-                            speed = 4f;
-                            velocity = xAxis * speed;
-                        }
+                        velocity = 0;
                     }
+                }
+            }
+            rb.linearVelocity = new Vector2(velocity, yVelocity);
+            if (inSpike)
+            {
+                if (deathBuffer > 0)
+                {
+                    deathBuffer -= Time.deltaTime;
                 }
                 else
                 {
-                    velocity = 0;
+                    Destroy(gameObject);
                 }
-            }
-        }
-        rb.linearVelocity = new Vector2(velocity, yVelocity);
-        if (inSpike)
-        {
-            if (deathBuffer > 0)
-            {
-                deathBuffer -= Time.deltaTime;
             }
             else
             {
-                Destroy(gameObject);
+                deathBuffer = 0.005f;
             }
         }
         else
         {
-            deathBuffer = 0.005f;
+            rb.linearVelocity = new Vector2 (0, 0);
         }
 
     }
@@ -389,12 +408,18 @@ public class PlayerScript : MonoBehaviour
         }
         else if (collision.transform.CompareTag("HTransition"))
         {
-            if (speed < 4f){
+            if (speed < 4f)
+            {
                 speed = 4f;
             }
             direction = xAxis;
             transitioning = true;
         }
+        else if (collision.transform.CompareTag("Temporary"))
+        {
+            collision.gameObject.GetComponent<TempPlatform>().SteppedOn();
+        }
+
 
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -432,6 +457,11 @@ public class PlayerScript : MonoBehaviour
         else if (collision.transform.CompareTag("HTransition"))
         {
             transitioning = true;
+        }
+        else if (collision.transform.CompareTag("Temporary"))
+        {
+            collision.gameObject.GetComponent<TempPlatform>().SteppedOn();
+            onSolidGround = false;
         }
     }
 }

@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Loading Screen.unity
+    guid: 410c67cabd592d146a7bf8835fcf36e6
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 8963666af9d66b24ea827c03827ca997
+  - enabled: 1
+    path: Assets/Scenes/TheCave.unity
+    guid: 7c0e3037774843040afb81234f5bcfed
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:

@@ -15,6 +15,7 @@ TagManager:
   - HexaPiece
   - SecretRoom
   - HTransition
+  - Temporary
   layers:
   - Default
   - TransparentFX
