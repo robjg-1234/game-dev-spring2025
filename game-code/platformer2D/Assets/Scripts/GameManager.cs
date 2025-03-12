@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int levelNum;
     [SerializeField] CameraScript oldCamera;
     public PlayerScript currentPlayerIteration;
+    public Action playerJump;
     public Action playerDeath;
     public int CoinCollected =0;
     public int maxHexaCoins;
@@ -95,6 +96,13 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+    }
+    public void Jump()
+    {
+        if (playerJump != null)
+        {
+            playerJump();
+        }
     }
     public void RespawnPlayer()
     {

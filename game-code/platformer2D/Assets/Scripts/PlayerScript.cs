@@ -115,6 +115,7 @@ public class PlayerScript : MonoBehaviour
                 fallTime += Time.deltaTime;
                 if (fallTime <= coyoteTime && !jumped && jumpBuffer > 0)
                 {
+                    gameManager.Jump();
                     jumped = true;
                     yVelocity = 6f;
                     jumpBuffer = 0;
@@ -156,6 +157,7 @@ public class PlayerScript : MonoBehaviour
                 }
                 if (jumpBuffer > 0)
                 {
+                    gameManager.Jump();
                     jumpingTimer = 0.1f;
                     jumped = true;
                     yVelocity = 6f;

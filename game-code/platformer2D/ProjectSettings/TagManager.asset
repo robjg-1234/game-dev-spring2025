@@ -16,6 +16,7 @@ TagManager:
   - SecretRoom
   - HTransition
   - Temporary
+  - Switch
   layers:
   - Default
   - TransparentFX

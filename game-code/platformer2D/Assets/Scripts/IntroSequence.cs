@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class IntroSequence : MonoBehaviour
 {
+    [SerializeField] Image fadeIn;
     [SerializeField] Image FirstPage;
     [SerializeField] TMP_Text Description;
+    bool movingOn = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +22,15 @@ public class IntroSequence : MonoBehaviour
         PlayerPrefs.SetFloat("levelThreeTime", 99);
         PlayerPrefs.Save();
         StartCoroutine(IntroCustscene());
+    }
+    public void GoToNextScreen()
+    {
+        if (!movingOn)
+        {
+            StartCoroutine(MoveOn());
+            movingOn = true;
+        }
+
     }
     IEnumerator IntroCustscene()
     {
@@ -36,7 +47,21 @@ public class IntroSequence : MonoBehaviour
             FirstPage.color = new Color(FirstPage.color.r, FirstPage.color.g, FirstPage.color.b, FirstPage.color.a - (0.5f * Time.deltaTime));
             yield return null;
         }
-        yield return new WaitForSeconds(0.5f);
+        while (fadeIn.color.a > 0)
+        {
+            fadeIn.color = new Color(fadeIn.color.r, fadeIn.color.g, fadeIn.color.b, fadeIn.color.a - (0.5f * Time.deltaTime));
+            yield return null;
+        }
+        fadeIn.gameObject.SetActive(false);
+    }
+    IEnumerator MoveOn()
+    {
+        fadeIn.gameObject.SetActive(true);
+        while (fadeIn.color.a < 1)
+        {
+            fadeIn.color = new Color(fadeIn.color.r, fadeIn.color.g, fadeIn.color.b, fadeIn.color.a + (0.5f * Time.deltaTime));
+            yield return null;
+        }
         SceneManager.LoadScene(1);
     }
 }

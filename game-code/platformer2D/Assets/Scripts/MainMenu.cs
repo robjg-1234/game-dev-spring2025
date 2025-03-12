@@ -5,17 +5,10 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField] Image FadeIn;
-    [SerializeField] GameObject selectLevelScreen;
-    [SerializeField] GameObject titleScreen;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StartCoroutine(FadeInMenu());
-    }
-    public void NextScreen()
-    {
-        titleScreen.SetActive(false);
-        selectLevelScreen.SetActive(true);
     }
     IEnumerator FadeInMenu()
     {
