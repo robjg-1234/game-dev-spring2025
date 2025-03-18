@@ -663,7 +663,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fom the creator of The Griddler
+  m_text: From the creator of The Griddler
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86b51d9324b5116408de6d9d97610608, type: 2}
   m_sharedMaterial: {fileID: 1417550783163909846, guid: 86b51d9324b5116408de6d9d97610608, type: 2}
