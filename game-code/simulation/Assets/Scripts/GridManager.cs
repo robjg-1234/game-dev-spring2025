@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    [SerializeField] Camera _camera;
     [SerializeField] TMP_Text currentMonth;
     [SerializeField] GameObject pauseImage;
     [SerializeField] GameObject panel;
@@ -11,6 +12,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] TMP_Text humidity;
     [SerializeField] TMP_Text temperature;
     [SerializeField] TMP_Text animalPop;
+    [SerializeField] Vector3 target;
     public static GridManager instance;
     [SerializeField] GameObject cellPrefab;
     public CellScript[,] grid;
@@ -19,20 +21,46 @@ public class GridManager : MonoBehaviour
     [SerializeField] int waterSpots;
     CellScript currentCell;
     CellScript selectedCell;
+    [SerializeField] float rotationSpeed = 20f;
     bool paused = true;
     bool freedomUnits = false;
     int month = 1;
     float stepTimer = 5f;
+    float angle = 0;
+    float distance;
+    float offSetX;
+    float offSetZ;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     // Volcano by Poly by Google [CC-BY] via Poly Pizza
+
+    // polar coordinates
+
     void Start()
     {
+        offSetX = 5f;
+        offSetZ = 5f;
+        angle = 180f - Mathf.Abs(_camera.transform.rotation.eulerAngles.y) - 90;
+        distance = Mathf.Sqrt(Mathf.Pow(_camera.transform.position.x, 2) + Mathf.Pow(_camera.transform.position.y, 2));
         instance = this;
         grid = new CellScript[width, height];
         InitializeGrid();
     }
     private void Update()
     {
+        float xAxis = Input.GetAxisRaw("Horizontal");
+
+
+        angle += xAxis * rotationSpeed * Time.deltaTime;
+        while (angle < 0f)
+        {
+            angle += 360f;
+        }
+        while (angle >= 360f)
+        {
+            angle -= 360f;
+        }
+        CameraPosition();
+
         if (!paused)
         {
             if (stepTimer > 0)
@@ -48,7 +76,7 @@ public class GridManager : MonoBehaviour
                 }
                 stepTimer = 5f;
                 month += 1;
-                currentMonth.text = "Month "+ month.ToString();
+                currentMonth.text = "Month " + month.ToString();
             }
         }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -175,5 +203,20 @@ public class GridManager : MonoBehaviour
         paused = !paused;
         pauseImage.SetActive(paused);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube(target, new Vector3(0.5f, 0.5f, 0.5f));
+    }
+    void CameraPosition()
+    {
+        float changeX;
+        float changeZ;
+        float posY = _camera.transform.position.y;
 
+        changeX = distance * Mathf.Cos(angle);
+        changeZ = distance * Mathf.Sin(angle);
+        _camera.transform.position = new Vector3(changeX + offSetX, posY, changeZ + offSetZ);
+        _camera.transform.LookAt(target);
+    }
 }

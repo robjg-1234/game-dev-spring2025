@@ -205,13 +205,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.1361463, y: 0.3915711, z: -0.058700427, w: -0.90812474}
-  m_LocalPosition: {x: 12.67, y: 3.24, z: -1.94}
+  m_LocalRotation: {x: 0.080032855, y: -0.3944396, z: 0.03450901, w: 0.91477937}
+  m_LocalPosition: {x: 14.24, y: 4.78, z: -1.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: -46.65, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15eabf5ea6627a2448c4b37c94311cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 330585545}
   currentMonth: {fileID: 1041011449}
   pauseImage: {fileID: 2138432995}
   panel: {fileID: 417393268}
@@ -568,10 +569,12 @@ MonoBehaviour:
   humidity: {fileID: 531056016}
   temperature: {fileID: 1897038765}
   animalPop: {fileID: 1869673815}
+  target: {x: 5, y: 1, z: 5}
   cellPrefab: {fileID: 2877319150287917095, guid: 7ad52c8505a23114d9bea8a182dd2327, type: 3}
   width: 10
   height: 10
   waterSpots: 25
+  rotationSpeed: 3.5
 --- !u!4 &436746558
 Transform:
   m_ObjectHideFlags: 0
