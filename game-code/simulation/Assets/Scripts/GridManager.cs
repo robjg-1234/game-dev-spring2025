@@ -12,7 +12,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] TMP_Text humidity;
     [SerializeField] TMP_Text temperature;
     [SerializeField] TMP_Text animalPop;
-    [SerializeField] Vector3 target;
+    Vector3 target;
     public static GridManager instance;
     [SerializeField] GameObject cellPrefab;
     public CellScript[,] grid;
@@ -37,8 +37,9 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        offSetX = 5f;
-        offSetZ = 5f;
+        target = new Vector3(width / 2f, 1f, height / 2f);
+        offSetX = target.x;
+        offSetZ = target.z;
         angle = 180f - Mathf.Abs(_camera.transform.rotation.eulerAngles.y) - 90;
         distance = Mathf.Sqrt(Mathf.Pow(_camera.transform.position.x, 2) + Mathf.Pow(_camera.transform.position.y, 2));
         instance = this;

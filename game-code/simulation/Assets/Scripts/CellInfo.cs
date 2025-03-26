@@ -170,7 +170,7 @@ public class CellInfo
                     {
                         if (neighbor.state == 3)
                         {
-                            if (neighbor.age > 5)
+                            if (neighbor.age >= 5)
                             {
                                 if (Random.Range(0, 4) == 3)
                                 {
@@ -279,6 +279,10 @@ public class CellInfo
             {
                 state = 0;
                 temperature += 1;
+            }
+            if (animals > 25)
+            {
+                animals = Mathf.FloorToInt(animals / 2);
             }
         }
         else if (newState == 1)

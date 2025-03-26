@@ -569,7 +569,6 @@ MonoBehaviour:
   humidity: {fileID: 531056016}
   temperature: {fileID: 1897038765}
   animalPop: {fileID: 1869673815}
-  target: {x: 5, y: 1, z: 5}
   cellPrefab: {fileID: 2877319150287917095, guid: 7ad52c8505a23114d9bea8a182dd2327, type: 3}
   width: 10
   height: 10
