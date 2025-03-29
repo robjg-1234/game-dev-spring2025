@@ -45,18 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9b76402166e94459e1651dc9b97315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage0: {fileID: 6150009177660156806, guid: 8f12eee328ff5f340ba04903cfbfd375, type: 3}
-  stage1: {fileID: 7195589493117263909, guid: 6bc650c2d3b669448acf54c521e364e0, type: 3}
-  stage2: {fileID: 448777025593038660, guid: d9ed20e5f3955ce4f97dc1703640117f, type: 3}
-  stage3: {fileID: 6594417761500896956, guid: 13606f7b2029299409308b926b075579, type: 3}
-  stage4: {fileID: 4784326621645488634, guid: 6428836bf8326614986114b400623d8a, type: 3}
-  volcanoPrefab: {fileID: 296389374214280829, guid: a8dfe3a819abb174a8e170c10b37f118, type: 3}
+  shop: {fileID: 8064710131809218064, guid: 2088d82f92a406e45b6f6f9d747c6698, type: 3}
   rend: {fileID: 7202343791192443880}
-  water: {r: 0, g: 0.48044166, b: 0.6792453, a: 1}
-  fertileLand: {r: 0.7250657, g: 1, b: 0.495283, a: 1}
-  forest: {r: 0, g: 0.46226418, b: 0.021352103, a: 1}
-  desert: {r: 0.9921569, g: 1, b: 0.654902, a: 1}
-  volcano: {r: 0, g: 0, b: 0, a: 0}
+  waterLow: {r: 0.30973598, g: 0.30838373, b: 0.8490566, a: 1}
+  land: {r: 0.9056604, g: 0.88058007, b: 0.55108577, a: 1}
+  waterMedium: {r: 0, g: 0.015151501, b: 1, a: 1}
+  waterHigh: {r: 0.0066898908, g: 0, b: 0.6603774, a: 1}
 --- !u!1 &5291378558826197158
 GameObject:
   m_ObjectHideFlags: 0

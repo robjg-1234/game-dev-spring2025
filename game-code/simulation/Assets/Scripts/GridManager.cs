@@ -1,139 +1,151 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    [SerializeField] GameObject ShopPanel;
+    
+    [SerializeField] public TMP_Dropdown targetMenu;
+    [SerializeField] GameObject ships;
     [SerializeField] Camera _camera;
     [SerializeField] TMP_Text currentMonth;
     [SerializeField] GameObject pauseImage;
     [SerializeField] GameObject panel;
+    [SerializeField] GameObject endPanel;
+    //General
     [SerializeField] TMP_Text cellDesc;
-    [SerializeField] TMP_Text humidity;
-    [SerializeField] TMP_Text temperature;
-    [SerializeField] TMP_Text animalPop;
+    [SerializeField] TMP_Text HPDesc;
+    [SerializeField] TMP_Text ReputationDesc;
+    [SerializeField] TMP_Text locationDesc;
+    // Players Stuff
+    [SerializeField] TMP_Text playerFirepower;
+    [SerializeField] TMP_Text playerHealth;
+    [SerializeField] TMP_Text coords;
+    [SerializeField] TMP_Text helmsmanLevel;
+    [SerializeField] TMP_Text playerTreasure;
+    [SerializeField] TMP_Text playerReputation;
+    [SerializeField] TMP_Text rumors;
+    //
+    public float[,] costMap;
     Vector3 target;
     public static GridManager instance;
     [SerializeField] GameObject cellPrefab;
     public CellScript[,] grid;
     [SerializeField] public int width;
     [SerializeField] public int height;
-    [SerializeField] int waterSpots;
     CellScript currentCell;
     CellScript selectedCell;
     [SerializeField] float rotationSpeed = 20f;
+    public Action treasureFound;
+    public List<(int, int)> availableDocks = new List<(int, int)>();
+    public List<ShipScript> currentShips = new List<ShipScript>();
+    ShipScript playerShip;
+    public (int, int) treasure = (-1, -1);
+    public bool[,] traversableMap;
+    public int weather = 0;
     bool paused = true;
-    bool freedomUnits = false;
     int month = 1;
-    float stepTimer = 5f;
+    float stepTimer = 2f;
     float angle = 0;
-    float distance;
+    [SerializeField] float distance;
+    bool GameDone = false;
     float offSetX;
     float offSetZ;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     // Volcano by Poly by Google [CC-BY] via Poly Pizza
-
-    // polar coordinates
+    //Pirate Ship by Braden Brunk[CC - BY] via Poly Pizza
 
     void Start()
     {
-        target = new Vector3(width / 2f, 1f, height / 2f);
+        costMap = new float[width, height];
+        target = new Vector3(width / 2f, 4f, height / 2f);
         offSetX = target.x;
         offSetZ = target.z;
         angle = 180f - Mathf.Abs(_camera.transform.rotation.eulerAngles.y) - 90;
-        distance = Mathf.Sqrt(Mathf.Pow(_camera.transform.position.x, 2) + Mathf.Pow(_camera.transform.position.y, 2));
         instance = this;
         grid = new CellScript[width, height];
+        traversableMap = new bool[width, height];
         InitializeGrid();
+        PlaceBoats();
+        UpdateMyShip();
     }
     private void Update()
     {
-        float xAxis = Input.GetAxisRaw("Horizontal");
-
-
-        angle += xAxis * rotationSpeed * Time.deltaTime;
-        while (angle < 0f)
+        if (!GameDone)
         {
-            angle += 360f;
-        }
-        while (angle >= 360f)
-        {
-            angle -= 360f;
-        }
-        CameraPosition();
-
-        if (!paused)
-        {
-            if (stepTimer > 0)
+            float xAxis = Input.GetAxisRaw("Horizontal");
+            angle += xAxis * rotationSpeed * Time.deltaTime;
+            while (angle < 0f)
             {
-                stepTimer -= Time.deltaTime;
+                angle += 360f;
             }
-            else
+            while (angle >= 360f)
             {
-                SimulateStep();
+                angle -= 360f;
+            }
+            CameraPosition();
+
+            if (!paused)
+            {
+                if (stepTimer > 0)
+                {
+                    stepTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    SimulateStep();
+                    stepTimer = 2f;
+                    month += 1;
+                    currentMonth.text = "Hour " + month.ToString();
+                }
+            }
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("cell")))
+            {
+                currentCell = hit.collider.GetComponentInParent<CellScript>();
                 if (selectedCell != null)
                 {
-                    ShowSummary(selectedCell.State);
+                    if (currentCell != selectedCell)
+                    {
+                        selectedCell.UnSelect();
+                        selectedCell = currentCell;
+                        selectedCell.SelectCell();
+                    }
                 }
-                stepTimer = 5f;
-                month += 1;
-                currentMonth.text = "Month " + month.ToString();
-            }
-        }
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, float.MaxValue, LayerMask.GetMask("cell")))
-        {
-            currentCell = hit.collider.GetComponentInParent<CellScript>();
-            if (selectedCell != null)
-            {
-                if (currentCell != selectedCell)
+                else
                 {
-                    selectedCell.UnSelect();
                     selectedCell = currentCell;
                     selectedCell.SelectCell();
-                    ShowSummary(selectedCell.State);
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    panel.SetActive(true);
+                    ShowSummary(selectedCell.State.Copy());
                 }
             }
             else
             {
-                selectedCell = currentCell;
-                selectedCell.SelectCell();
-                ShowSummary(selectedCell.State);
+                if (selectedCell != null)
+                {
+                    selectedCell.UnSelect();
+                    selectedCell = null;
+                    currentCell = null;
+                }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    panel.SetActive(false);
+                }
             }
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                CellInfo tempCheck = selectedCell.State;
-                tempCheck.SetState(3, tempCheck.x, tempCheck.y);
-                selectedCell.State = tempCheck;
-                ShowSummary(selectedCell.State);
-
+                TogglePause();
             }
-            if (Input.GetMouseButtonDown(1))
-            {
-                CellInfo tempCheck = selectedCell.State;
-                tempCheck.SetState(0, tempCheck.x, tempCheck.y);
-                selectedCell.State = tempCheck;
-                ShowSummary(selectedCell.State);
-            }
-            panel.SetActive(true);
-        }
-        else
-        {
-            if (selectedCell != null)
-            {
-                selectedCell.UnSelect();
-                selectedCell = null;
-                currentCell = null;
-            }
-            panel.SetActive(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TogglePause();
         }
     }
-    // Update is called once per frame
     void SimulateStep()
     {
         CellInfo[,] newGrid = new CellInfo[width, height];
@@ -152,6 +164,41 @@ public class GridManager : MonoBehaviour
                 grid[i, j].State = newGrid[i, j];
             }
         }
+        for (int i = 0; i < currentShips.Count; i++)
+        {
+            currentShips[i].simulateNextStep();
+        }
+        newGrid = null;
+        UpdateMyShip();
+
+    }
+    void ShowSummary(CellInfo checkState)
+    {
+        if (checkState.occupied)
+        {
+            ShipScript cellShip = grid[checkState.x, checkState.y].GetShip();
+            ArrayList shipShow = cellShip.GetShipSummary();
+            cellDesc.text = "Ship";
+            HPDesc.text = "Hull HP: " + shipShow[0].ToString();
+            locationDesc.text = shipShow[4].ToString();
+            ReputationDesc.text = "Reputation: " + shipShow[7].ToString();
+        }
+        else
+        {
+            ArrayList tempShow = checkState.GetSummary();
+            cellDesc.text = tempShow[0].ToString();
+            if (checkState.traversable)
+            {
+                HPDesc.text = "Tide Level: " + tempShow[1].ToString();
+            }
+            else
+            {
+                HPDesc.text = " ";
+            }
+
+            locationDesc.text = "(" + tempShow[2].ToString() + ", " + tempShow[3].ToString() + ")";
+            ReputationDesc.text = " ";
+        }
 
     }
     void InitializeGrid()
@@ -163,42 +210,74 @@ public class GridManager : MonoBehaviour
                 Vector3 pos = new Vector3(i, 0, j);
                 grid[i, j] = Instantiate(cellPrefab, pos, Quaternion.identity).GetComponent<CellScript>();
                 grid[i, j].SetCoordinates(i, j);
-                if (waterSpots > 0)
+                costMap[i, j] = 9999999999;
+                int randomizedState = Mathf.RoundToInt(Mathf.PerlinNoise(i / 6.5f, j / 6.5f) * 5f) - 1;
+                CellInfo tempInit = grid[i, j].State.Copy();
+                tempInit.SetState(randomizedState);
+                traversableMap[i, j] = tempInit.traversable;
+                grid[i, j].State = tempInit;
+            }
+        }
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                grid[i, j].State.PlaceShops();
+            }
+        }
+        
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                grid[i, j].State.PreStartUpdates();
+                grid[i, j].State = grid[i, j].State.Copy();
+            }
+        }
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (grid[i, j].State.shopDock)
                 {
-                    if (Random.Range(0, 4) == 1)
-                    {
-                        CellInfo tempCell = new CellInfo();
-                        tempCell.SetState(1, i, j);
-                        grid[i, j].State = tempCell;
-                        waterSpots--;
-                    }
+                    availableDocks.Add((i, j));
                 }
             }
         }
+        ChooseTreasure();
     }
-
-    void ShowSummary(CellInfo target)
+    void ChooseTreasure()
     {
-        ArrayList tempShow = target.GetSummary();
-        cellDesc.text = tempShow[0].ToString();
-        humidity.text = "Humidity: " + ((float)tempShow[1]).ToString("0.00") + "%";
-        if (freedomUnits)
+        (int, int) newSpot = (-1, -1);
+        int[] xVal = new int[width];
+        int[] yVal = new int[height];
+        for (int i = 0; i < width; i++)
         {
-            float fahrenheitTemp = (float)tempShow[2];
-            fahrenheitTemp = (fahrenheitTemp * 9f / 5f) + 32;
-            temperature.text = "Temperature: " + fahrenheitTemp.ToString("0.00") + "°F";
+            xVal[i] = i;
         }
-        else
+        for (int i = 0; i < height; i++)
         {
-            temperature.text = "Temperature: " + ((float)tempShow[2]).ToString("0.00") + "°C";
+            yVal[i] = i;
         }
-        animalPop.text = "Animal Population: " + tempShow[3].ToString();
+        yVal = Randomizer(yVal);
+        xVal = Randomizer(xVal);
+        for (int i = 0; i < xVal.Length; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (traversableMap[xVal[i], yVal[j]] && !availableDocks.Contains((xVal[i], yVal[j])))
+                {
+                    newSpot = (xVal[i], yVal[j]);
+                    break;
+                }
+            }
+        }
+        treasure = newSpot;
+        Debug.Log(treasure.ToString());
     }
-    public void ToggleFreedomUnits(bool val)
-    {
-        freedomUnits = val;
-    }
-
     public void TogglePause()
     {
         paused = !paused;
@@ -220,4 +299,171 @@ public class GridManager : MonoBehaviour
         _camera.transform.position = new Vector3(changeX + offSetX, posY, changeZ + offSetZ);
         _camera.transform.LookAt(target);
     }
+    void PlaceBoats()
+    {
+        bool setPlayer = true;
+        int remainingShips = 4;
+        (int, int)[] randomPositions = new (int, int)[width * height];
+        int counter = 0;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                randomPositions[counter] = (i, j);
+                counter++;
+            }
+        }
+
+        randomPositions = Randomizer(randomPositions);
+        for (int i = 0; i < randomPositions.Length; i++)
+        {
+            if (traversableMap[randomPositions[i].Item1, randomPositions[i].Item2] && remainingShips > 0)
+            {
+                if (UnityEngine.Random.Range(0, 4) == 0)
+                {
+                    Vector3 pos = new Vector3(randomPositions[i].Item1, 0, randomPositions[i].Item2);
+                    ShipScript ship = Instantiate(ships, pos, Quaternion.identity).GetComponent<ShipScript>();
+                    ship.InitializeBoat(randomPositions[i].Item1, randomPositions[i].Item2, setPlayer);
+                    currentShips.Add(ship);
+                    grid[randomPositions[i].Item1, randomPositions[i].Item2].SetShip(ship);
+                    remainingShips--;
+                    if (setPlayer)
+                    {
+                        playerShip = ship;
+                    }
+                    setPlayer = false;
+                }
+            }
+        }
+
+
+
+    }
+    static int[] Randomizer(int[] numbers)
+    {
+        int[] tempArray = numbers;
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            int temp = UnityEngine.Random.Range(0, numbers.Length);
+            int tempVal = tempArray[i];
+            tempArray[i] = tempArray[temp];
+            tempArray[temp] = tempVal;
+        }
+        return tempArray;
+    }
+    //Tuple overload
+    static (int, int)[] Randomizer((int, int)[] numbers)
+    {
+        (int, int)[] tempArray = numbers;
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            int temp = UnityEngine.Random.Range(0, numbers.Length);
+            (int, int) tempVal = tempArray[i];
+            tempArray[i] = tempArray[temp];
+            tempArray[temp] = tempVal;
+        }
+        return tempArray;
+    }
+    public void GrabbedTreaure()
+    {
+        if (treasureFound != null)
+        {
+            ChooseTreasure();
+            treasureFound();
+        }
+    }
+
+    void UpdateMyShip()
+    {
+        if (playerShip != null)
+        {
+            ArrayList summary = playerShip.GetShipSummary();
+            playerHealth.text = "Hull HP: " + summary[0].ToString() + "/" + summary[1].ToString();
+            playerFirepower.text = "Firepower: " + summary[2].ToString() + "/" + summary[3].ToString();
+            coords.text = summary[4].ToString();
+            helmsmanLevel.text = "Helmsman Skill: " + summary[5].ToString();
+            playerTreasure.text = "Treasure: " + summary[6].ToString();
+            playerReputation.text = "Reputation: " + summary[7].ToString();
+            if (playerShip.treasureSpot == treasure)
+            {
+                rumors.text = "Treasure Rumors: " + treasure.ToString();
+            }
+            else
+            {
+                rumors.text = "Treasure Rumors: " + summary[8].ToString();
+            }
+        }
+    }
+
+    public void EndGame()
+    {
+        endPanel.SetActive(true);
+        GameDone = true;
+    }
+    public void TargetModifier(int val)
+    {
+        if (playerShip != null)
+        {
+            playerShip.SetPriority(val);
+        }
+    }
+    public void OpenShop()
+    {
+        ShopPanel.SetActive(true);
+    }
+    public void CloseShop()
+    {
+        ShopPanel.SetActive(false);
+    }
+    public void FixHull()
+    {
+        if (playerShip != null)
+        {
+            if (playerShip.hullHP < playerShip.maxHull && playerShip.treasure > 4)
+            {
+                playerShip.treasure -= 5;
+                playerShip.hullHP++;
+            }
+        }
+        UpdateMyShip();
+    }
+    public void UpgradeHull()
+    {
+        if (playerShip != null)
+        {
+            if (5 > playerShip.maxHull && playerShip.treasure >= 25)
+            {
+                playerShip.treasure -= 25;
+                playerShip.maxHull++;
+                playerShip.hullHP = playerShip.maxHull;
+            }
+        }
+        UpdateMyShip();
+    }
+    public void LevelHelmsman()
+    {
+        if (playerShip != null)
+        {
+            if (3 > playerShip.helmsmanLevel && playerShip.treasure >= 50)
+            {
+                playerShip.treasure -= 50;
+                playerShip.helmsmanLevel++;
+            }
+        }
+        UpdateMyShip();
+    }
+    public void MoreFirepower()
+    {
+        if (playerShip != null)
+        {
+            if (playerShip.treasure >= 10)
+            {
+                playerShip.treasure -= 10;
+                playerShip.maxFirePower++;
+                playerShip.firePower = playerShip.maxFirePower;
+            }
+        }
+        UpdateMyShip();
+    }
+
 }

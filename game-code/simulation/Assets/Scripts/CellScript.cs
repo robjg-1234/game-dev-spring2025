@@ -1,103 +1,64 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
 
 public class CellScript : MonoBehaviour
 {
-    [SerializeField] GameObject stage0;
-    [SerializeField] GameObject stage1;
-    [SerializeField] GameObject stage2;
-    [SerializeField] GameObject stage3;
-    [SerializeField] GameObject stage4;
-    [SerializeField] GameObject volcanoPrefab;
+    [SerializeField] GameObject shop;
     [SerializeField] Renderer rend;
-    [SerializeField] Color water;
-    [SerializeField] Color fertileLand;
-    [SerializeField] Color forest;
-    [SerializeField] Color desert;
-    [SerializeField] Color volcano;
-    GameObject actualStage;
-    int prevAge =0;
+    [SerializeField] Color waterLow;
+    [SerializeField] Color land;
+    [SerializeField] Color waterMedium;
+    [SerializeField] Color waterHigh;
+    ShipScript ship;
+    GameObject activeShop;
     Color currentColor;
+    int prevTide = 0;
     private CellInfo _state = new CellInfo();
     public CellInfo State { get { return _state; } set { _state = value; ChangeState(); } }
-    int prevState = 0;
-    private void Start()
-    {
-        ChangeState();
-    }
     void ChangeState()
     {
-        if (_state.state != prevState)
+        if (_state.state> 0)
         {
-            if (actualStage != null)
+            if (_state.tideLevel != prevTide)
             {
-                Destroy(actualStage);
+                if (_state.tideLevel == 1)
+                {
+                    rend.material.color = waterLow;
+                }
+                else if (_state.tideLevel == 2)
+                {
+                    rend.material.color = waterMedium;
+                }
+                else
+                {
+                    rend.material.color = waterHigh;
+                }
+                currentColor = rend.material.color;
+                prevTide = _state.tideLevel;
             }
-            if (_state.state == 0)
-            {
-                rend.material.color = desert;
-            }
-            else if (_state.state == 1)
-            {
-                rend.material.color = water;
-            }
-            else if (_state.state == 2)
-            {
-                rend.material.color = fertileLand;
-            }
-            else if (_state.state == 3)
-            {
-                rend.material.color = forest;
-                actualStage = Instantiate(stage0, transform.position, Quaternion.identity);
-            }
-            else if (_state.state == 4)
-            {
-                rend.material.color = volcano;
-                actualStage = Instantiate(volcanoPrefab, transform.position, Quaternion.identity);
-            }
-            prevState = _state.state;
+            
         }
         else
         {
-            if (_state.state == 3 && _state.age != prevAge)
+            if (rend.material.color != land)
             {
-                if (actualStage != null)
-                {
-                    Destroy(actualStage);
-                }
-                if (_state.age == 1)
-                {
-                    rend.material.color = forest;
-                    actualStage = Instantiate(stage0, transform.position, Quaternion.identity);
-                }
-                else if (_state.age == 2)
-                {
-                    rend.material.color = forest;
-                    actualStage = Instantiate(stage1, transform.position, Quaternion.identity);
-                }
-                else if (_state.age == 3)
-                {
-                    rend.material.color = forest;
-                    actualStage = Instantiate(stage2, transform.position, Quaternion.identity);
-                }
-                else if (_state.age == 4)
-                {
-                    rend.material.color = forest;
-                    actualStage = Instantiate(stage3, transform.position, Quaternion.identity);
-                }
-                else if (_state.age == 5)
-                {
-                    rend.material.color = forest;
-                    actualStage = Instantiate(stage4, transform.position, Quaternion.identity);
-                }
-                prevAge = _state.age;
+                rend.material.color = land;
+                currentColor = rend.material.color;
+            }
+            if (_state.isShop && activeShop==null)
+            {
+                activeShop = Instantiate(shop, transform.position, Quaternion.identity);
             }
         }
-        if (rend.material.color != Color.red)
-        {
-            currentColor = rend.material.color;
-        }
+    }
+    public void SetShip(ShipScript newShip)
+    {
+        ship = newShip;
+        _state.occupied = true;
+    }
+    public void UnSetShip()
+    {
+        ship = null;
+        _state.occupied = false;
     }
     public void SetCoordinates(int x, int y)
     {
@@ -109,6 +70,17 @@ public class CellScript : MonoBehaviour
     }
     public void SelectCell()
     {
-        rend.material.color = Color.red;
+        rend.material.color = Color.gray;
+    }
+    public ShipScript GetShip()
+    {
+        if (ship != null)
+        {
+            return ship;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
