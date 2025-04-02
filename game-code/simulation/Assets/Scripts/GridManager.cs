@@ -30,7 +30,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] TMP_Text playerReputation;
     [SerializeField] TMP_Text rumors;
     //
-    public float[,] costMap;
     Vector3 target;
     public static GridManager instance;
     [SerializeField] GameObject cellPrefab;
@@ -43,6 +42,7 @@ public class GridManager : MonoBehaviour
     public Action treasureFound;
     public List<(int, int)> availableDocks = new List<(int, int)>();
     public List<ShipScript> currentShips = new List<ShipScript>();
+    public List<ShipScript> respawnQueue = new List<ShipScript>();
     ShipScript playerShip;
     public (int, int) treasure = (-1, -1);
     public bool[,] traversableMap;
@@ -60,7 +60,6 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        costMap = new float[width, height];
         target = new Vector3(width / 2f, 4f, height / 2f);
         offSetX = target.x;
         offSetZ = target.z;
@@ -168,6 +167,13 @@ public class GridManager : MonoBehaviour
         {
             currentShips[i].simulateNextStep();
         }
+        if (respawnQueue.Count > 0)
+        {
+            for (int i = 0;i < respawnQueue.Count; i++)
+            {
+                respawnQueue[i].simulateNextStep();
+            }
+        }
         newGrid = null;
         UpdateMyShip();
 
@@ -210,7 +216,6 @@ public class GridManager : MonoBehaviour
                 Vector3 pos = new Vector3(i, 0, j);
                 grid[i, j] = Instantiate(cellPrefab, pos, Quaternion.identity).GetComponent<CellScript>();
                 grid[i, j].SetCoordinates(i, j);
-                costMap[i, j] = 9999999999;
                 int randomizedState = Mathf.RoundToInt(Mathf.PerlinNoise(i / 6.5f, j / 6.5f) * 5f) - 1;
                 CellInfo tempInit = grid[i, j].State.Copy();
                 tempInit.SetState(randomizedState);

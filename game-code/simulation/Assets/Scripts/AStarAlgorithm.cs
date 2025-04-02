@@ -80,7 +80,7 @@ public class AStarAlgorithm
             if (currentPathLength == maxLengthForPath)
             {
                 path = new List<(int, int)>() { (-1,-1)};
-                return (999999, path.ToArray());
+                return (99999999999, path.ToArray());
             }
         }
         path.Reverse();
@@ -368,10 +368,6 @@ public class AStarAlgorithm
             if (currentNode == goalPoint)
             {
                 (totalCost, foundPath) = BacktrackPath(relationMap, currentNode, fScore);
-                if (myship.isPlayer)
-                {
-                    GridManager.instance.costMap = fScore;
-                }
                 return (totalCost, foundPath);
             }
             else
@@ -394,10 +390,6 @@ public class AStarAlgorithm
                             if (!nodeQueue.ContainsKey(i))
                             {
                                 nodeQueue.Add(i, fScore[i.Item1, i.Item2]);
-                            }
-                            else
-                            {
-                                nodeQueue[i] = fScore[i.Item1, i.Item2];
                             }
                         }
                     }

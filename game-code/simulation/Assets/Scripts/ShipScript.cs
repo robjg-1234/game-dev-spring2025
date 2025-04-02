@@ -76,7 +76,13 @@ public class ShipScript : MonoBehaviour
             }
             if (firePower > 0 && !gm.grid[currentPos.Item1, currentPos.Item2].State.shopDock)
             {
-                ShootBoat();
+                for (int i = 0; i < maxFirePower; i += 5)
+                {
+                    if (firePower > 0)
+                    {
+                        ShootBoat();
+                    }
+                }
             }
             pathUpdateFrequency--;
             if (path[path.Length - 1] == (-1, -1) || pathUpdateFrequency <= 0)
@@ -196,7 +202,6 @@ public class ShipScript : MonoBehaviour
         {
             if (!isPlayer)
             {
-                Debug.Log(respawnTimer);
                 if (respawnTimer > 0)
                 {
                     respawnTimer--;
@@ -220,6 +225,7 @@ public class ShipScript : MonoBehaviour
                             currentPos = gm.availableDocks[i];
                             priority = 1;
                             transform.position = new Vector3(currentPos.Item1, transform.position.y, currentPos.Item2);
+                            gm.respawnQueue.Remove(this);
                             gm.currentShips.Add(this);
                             break;
                         }
@@ -281,6 +287,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                         else if (Mathf.Abs(distanceToBoatX) == 2 && distanceToBoatY == 0)
@@ -291,6 +298,7 @@ public class ShipScript : MonoBehaviour
                                 if (cellInfo.GetHit())
                                 {
                                     reputation += 5;
+                                    treasure += cellInfo.reputation;
                                 }
                             }
                             else
@@ -305,6 +313,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
 
@@ -323,6 +332,7 @@ public class ShipScript : MonoBehaviour
                                 if (cellInfo.GetHit())
                                 {
                                     reputation += 5;
+                                    treasure += cellInfo.reputation;
                                 }
                             }
                             else
@@ -337,6 +347,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                     }
@@ -348,6 +359,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                         else if (Mathf.Abs(distanceToBoatY) == 2 && distanceToBoatX == 0)
@@ -358,6 +370,7 @@ public class ShipScript : MonoBehaviour
                                 if (cellInfo.GetHit())
                                 {
                                     reputation += 5;
+                                    treasure += cellInfo.reputation;
                                 }
                             }
                             else
@@ -372,6 +385,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                     }
@@ -383,6 +397,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                         else if (Mathf.Abs(distanceToBoatY) == 2 && distanceToBoatX == 0)
@@ -393,6 +408,7 @@ public class ShipScript : MonoBehaviour
                                 if (cellInfo.GetHit())
                                 {
                                     reputation += 5;
+                                    treasure += cellInfo.reputation;
                                 }
                             }
                             else
@@ -407,6 +423,7 @@ public class ShipScript : MonoBehaviour
                             if (cellInfo.GetHit())
                             {
                                 reputation += 5;
+                                treasure += cellInfo.reputation;
                             }
                         }
                     }
@@ -454,20 +471,23 @@ public class ShipScript : MonoBehaviour
                 priority = 1;
                 for (int i = 0; i < gm.availableDocks.Count; i++)
                 {
-                    (int, int)[] tempPath = new (int, int)[1];
-                    float tempCost = 0;
-                    (tempCost, tempPath) = AStarAlgorithm.AStar(currentPos, gm.availableDocks[i], gm.traversableMap, this);
-                    if (path[0] != (-1, -1))
+                    if (!gm.grid[gm.availableDocks[i].Item1, gm.availableDocks[i].Item2].State.occupied)
                     {
-                        if (tempCost < minCost)
+                        (int, int)[] tempPath = new (int, int)[1];
+                        float tempCost = 0;
+                        (tempCost, tempPath) = AStarAlgorithm.AStar(currentPos, gm.availableDocks[i], gm.traversableMap, this);
+                        if (path[0] != (-1, -1))
+                        {
+                            if (tempCost < minCost)
+                            {
+                                path = tempPath;
+                                currentTarget = gm.availableDocks[i];
+                            }
+                        }
+                        else
                         {
                             path = tempPath;
-                            currentTarget = gm.availableDocks[i];
                         }
-                    }
-                    else
-                    {
-                        path = tempPath;
                     }
                 }
             }
@@ -498,7 +518,7 @@ public class ShipScript : MonoBehaviour
                         {
                             treasure -= 25;
                             maxHull++;
-                            hullHP = maxHull;
+                            hullHP++;
                         }
                         if (treasure >= 10)
                         {
@@ -537,10 +557,6 @@ public class ShipScript : MonoBehaviour
                 }
 
             }
-
-
-
-
         }
         else if (priority == 2)
         {
@@ -600,6 +616,10 @@ public class ShipScript : MonoBehaviour
             if (isPlayer)
             {
                 gm.EndGame();
+            }
+            else
+            {
+                gm.respawnQueue.Add(this);
             }
         }
         return sunk;
