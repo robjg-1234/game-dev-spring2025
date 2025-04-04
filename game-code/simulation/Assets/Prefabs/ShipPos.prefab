@@ -45,13 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d810c11a7be0c9749939c11d85c5cf87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  display: {fileID: 6675867655960394222, guid: 7bd4409d2aea5bf43bdef7f1830d0943, type: 3}
   shipDesign: {fileID: 1949125263224473940}
   direction: 0
   hullHP: 3
   reputation: 5
   helmsmanLevel: 1
   heardShots: 0
+  treasure: 0
+  maxHull: 3
   firePower: 5
+  maxFirePower: 5
+  dead: 0
+  isPlayer: 0
 --- !u!1 &1949125263224473940
 GameObject:
   m_ObjectHideFlags: 0

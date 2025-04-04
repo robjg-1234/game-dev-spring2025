@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CellInfo
 {
-
+    
     public int state = 0;
     public int x = 0;
     public int y = 0;

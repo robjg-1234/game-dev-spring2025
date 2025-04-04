@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShipScript : MonoBehaviour
 {
+    GameObject indicator;
+    [SerializeField] GameObject display;
     GridManager gm;
     [SerializeField] GameObject shipDesign;
     public int direction = 0;
@@ -44,6 +46,12 @@ public class ShipScript : MonoBehaviour
     {
         gm = GridManager.instance;
         gm.treasureFound += TreasureFound;
+    }
+    public void SetPlayer()
+    {
+        isPlayer = true;
+        indicator = Instantiate(display, transform);
+        indicator.transform.SetParent(transform);
     }
     private void Update()
     {
@@ -644,6 +652,10 @@ public class ShipScript : MonoBehaviour
     {
         isPlayer = player;
         currentPos = (x, y);
+        if (isPlayer )
+        {
+            SetPlayer();
+        }
     }
 
     public ArrayList GetShipSummary()
