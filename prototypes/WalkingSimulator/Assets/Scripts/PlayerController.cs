@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        GameManager.instance.PCPlayer = this;
     }
 
     // Update is called once per frame
@@ -77,7 +78,8 @@ public class PlayerController : MonoBehaviour
                     }
                     else if (hitInfo.collider.CompareTag("puzzle"))
                     {
-                        
+                        interacting = true;
+                        hitInfo.collider.GetComponent<SafeScript>().ActivatePuzzleScreen();
                     }
                 }
             }

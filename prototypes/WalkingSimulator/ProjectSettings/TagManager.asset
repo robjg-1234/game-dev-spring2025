@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NPC
   - puzzle
+  - Key
   layers:
   - Default
   - TransparentFX

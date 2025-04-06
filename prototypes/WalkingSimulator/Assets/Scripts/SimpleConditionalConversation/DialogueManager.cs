@@ -36,23 +36,6 @@ public class DialogueManager : MonoBehaviour
 		//
 
 		scc.setGameStateValue("keyFound", "equals", "false");
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-		// An example of getting a line of dialogue.
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			string line = DialogueManager.scc.getSCCLine("Tom");
-			Debug.Log("Tom says: " + line);
-			DialogueAction?.Invoke("Tom", line);
-		}
-		
-		// An example of modifying the state outside of the DialogueManager (e.g. you could put this in some
-		// OnTriggerEnter or something)
-		//if (Input.GetKeyDown(KeyCode.G)) {
-		//	scc.setGameStateValue("playerWearing", "equals", "Green shirt");
-		//	Debug.Log("Emma puts on a green shirt.");
-		//}
-	}
+        scc.setGameStateValue("safeClosed", "set", "true");
+    }
 }
