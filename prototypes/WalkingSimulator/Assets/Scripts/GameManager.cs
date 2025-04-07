@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         if (gameState == 1 )
         {
             doorAnimator.SetBool("Door Open", true);
+            DialogueManager.DialogueAction.Invoke();
             DialogueManager.scc.questState = "Q1T2";
         }
         else if (gameState == 2 )

@@ -7,7 +7,7 @@ public class DialogueManager : MonoBehaviour
 {
 	public static SimpleConditionalConversation scc;
 
-	public static Action<string, string> DialogueAction;
+	public static Action DialogueAction;
 
 	// NOTE: When you do not use the google sheet option, it is expecting the file
 	// to be named "data.csv" and for it to be in the Resources folder in Assets.
@@ -35,7 +35,7 @@ public class DialogueManager : MonoBehaviour
 		// as strings.
 		//
 
-		scc.setGameStateValue("keyFound", "equals", "false");
-        scc.setGameStateValue("safeClosed", "set", "true");
+		scc.setGameStateValue("keyFound", "equals", false);
+        scc.setGameStateValue("safeClosed", "set", true);
     }
 }

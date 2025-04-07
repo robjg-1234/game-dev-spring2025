@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     float yaw = 0f;
     float sensitivityValue = 3f;
     float playerSpeed = 7f;
-    bool interacting = false;
+    public bool interacting = false;
     NPCScript currentNPC;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,8 +73,11 @@ public class PlayerController : MonoBehaviour
                 {
                     if (hitInfo.collider.CompareTag("NPC"))
                     {
-                        hitInfo.collider.GetComponent<NPCScript>().TalkToEm();
-                        interacting = true;
+                        if (hitInfo.collider.GetComponent<NPCScript>().interactable)
+                        {
+                            interacting = true;
+                            hitInfo.collider.GetComponent<NPCScript>().TalkToEm();
+                        }
                     }
                     else if (hitInfo.collider.CompareTag("puzzle"))
                     {
@@ -95,5 +98,4 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 }

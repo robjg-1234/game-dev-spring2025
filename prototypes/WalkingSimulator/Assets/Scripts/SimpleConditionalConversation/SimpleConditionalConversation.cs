@@ -6,7 +6,7 @@ public class SimpleConditionalConversation
 {
 	public Dictionary<string, object> gameState;
 	public string questState = "Q1T1";
-
+	List<string> questStateHistory = new List<string>();
 	Hashtable lines;
 	
 	public SimpleConditionalConversation(string dataPath)
@@ -14,15 +14,21 @@ public class SimpleConditionalConversation
 		this.gameState = new Dictionary<string, object>();
 		List<Dictionary<string, object>> data = CSVReader.Read(dataPath);
 		this.loadLines(data);
+		updateQuestState(questState);
 	}
 	
 	public SimpleConditionalConversation(List<Dictionary<string, object>> data)
 	{
 		this.gameState = new Dictionary<string, object>();
 		this.loadLines(data);
+		updateQuestState(questState);
 	}
 	
-	
+	public void updateQuestState(string newState)
+	{
+		questStateHistory.Add(newState);
+		questState = newState;
+	}
 	// Loads data from the data structure that CSVReader creates when it loads
 	// a CSV file.
 	public void loadLines(List<Dictionary<string, object>> data) 
@@ -213,7 +219,7 @@ public class SimpleConditionalConversation
 				} else {
 					this.gameState[id] = right;
 				}
-			} else if (bool.TryParse((string)right, out rightBool)) {
+			} else if (bool.TryParse(right.ToString(), out rightBool)) {
 				if (!this.gameState.ContainsKey(id)) {
 					this.gameState.Add(id, rightBool);
 				} else {
