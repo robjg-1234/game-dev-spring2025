@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     float gravity = -10f;
     float pitch = 0f;
     float yaw = 0f;
-    float sensitivityValue = 1.5f;
+    float sensitivityValue = 1f;
     float playerSpeed = 7f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //Dead Tree Trunk by Zsky[CC - BY] via Poly Pizza
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
             }
 
             gameObject.transform.eulerAngles = new Vector3(0f, yaw, 0f);
-            cam.transform.eulerAngles = new Vector3(pitch, yaw, 0f);
+            cam.transform.eulerAngles = new Vector3(pitch, cam.transform.eulerAngles.y, 0f);
             Vector3 amountToMove = Vector3.zero;
             amountToMove += transform.forward.normalized * vAxis;
             amountToMove += transform.right.normalized * hAxis;
