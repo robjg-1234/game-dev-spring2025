@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     float gravity = -10f;
     float pitch = 0f;
     float yaw = 0f;
-    float sensitivityValue = 200f;
+    float sensitivityValue = 1.5f;
     float playerSpeed = 7f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //Dead Tree Trunk by Zsky[CC - BY] via Poly Pizza
@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour
             float vAxis = Input.GetAxisRaw("Vertical");
 
 
-            pitch += sensitivityValue * Input.GetAxis("Mouse Y") * -1 *Time.deltaTime;
-            yaw += sensitivityValue * Input.GetAxis("Mouse X") * Time.deltaTime;
+            pitch += sensitivityValue * Input.GetAxis("Mouse Y") * -1;
+            yaw += sensitivityValue * Input.GetAxis("Mouse X");
             //Limit how high or low you can go with the camera
             pitch = Mathf.Clamp(pitch, -90f, 90f);
             //Wrap around if a complete 360 is done (horizontal Axis)
