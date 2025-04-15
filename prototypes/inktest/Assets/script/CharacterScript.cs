@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     float gravity = -10f;
     float pitch = 0f;
     float yaw = 0f;
-    float sensitivityValue = 400f;
+    float sensitivityValue = 200f;
     float playerSpeed = 7f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     //Dead Tree Trunk by Zsky[CC - BY] via Poly Pizza
