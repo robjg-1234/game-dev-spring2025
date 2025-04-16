@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour
     float speed;
     float yAxis = 0;
     float xAxis = 0;
+    float shieldYAxis = 0;
+    float shieldXAxis = 0;
     float directionFlipTimer = 0f;
     bool jumpStopBuffer = false;
     bool inSpike = false;
@@ -72,12 +74,30 @@ public class PlayerScript : MonoBehaviour
             {
                 jumpStopBuffer = true;
             }
-            if (Input.GetKey(KeyCode.C))
+            if (Input.GetKey(KeyCode.UpArrow))
             {
+                shieldYAxis = 1;
+                HoldShield();
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                shieldYAxis = -1;
+                HoldShield();
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                shieldXAxis = 1;
+                HoldShield();
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                shieldXAxis = -1;
                 HoldShield();
             }
             else
             {
+                shieldXAxis = 0;
+                shieldYAxis = 0;
                 shield.SetActive(false);
             }
         }
@@ -285,9 +305,9 @@ public class PlayerScript : MonoBehaviour
         // up = 1 / 0.1 (0.55) = 1
         // left = 0.1/ 1 (-0.55) = 2
         // right = 0.1/ 1 (0.55) = 3
-        if (yAxis != 0)
+        if (shieldYAxis != 0)
         {
-            if (yAxis > 0)
+            if (shieldYAxis > 0)
             {
                 dir = 1;
                 shield.transform.localPosition = new Vector3(0, 0.5f, 0);
@@ -300,9 +320,9 @@ public class PlayerScript : MonoBehaviour
                 dir = 0;
             }
         }
-        else if (xAxis != 0)
+        else if (shieldXAxis != 0)
         {
-            if (xAxis > 0)
+            if (shieldXAxis > 0)
             {
                 shield.transform.localPosition = new Vector3(0.5f, 0f, 0);
                 shield.transform.localScale = new Vector3(0.2f, 1, 1);
@@ -326,11 +346,11 @@ public class PlayerScript : MonoBehaviour
         shield.SetActive(true);
         if (!usedDir.Contains(dir))
         {
-            if (yAxis != 0)
+            if (shieldYAxis != 0)
             {
-                if (Physics2D.BoxCast(transform.position, shieldLocation, 0, transform.up, shieldDistance * yAxis, shieldInteractable))
+                if (Physics2D.BoxCast(transform.position, shieldLocation, 0, transform.up, shieldDistance * shieldYAxis, shieldInteractable))
                 {
-                    if (yAxis > 0)
+                    if (shieldYAxis > 0)
                     {
                         usedDir.Add(1);
                     }
@@ -342,11 +362,11 @@ public class PlayerScript : MonoBehaviour
                     jumpStopBuffer = false;
                 }
             }
-            else if (xAxis != 0)
+            else if (shieldXAxis != 0)
             {
-                if (Physics2D.BoxCast(transform.position, verticalShieldLocation, 0, transform.right, verticalShieldDistance * xAxis, shieldInteractable))
+                if (Physics2D.BoxCast(transform.position, verticalShieldLocation, 0, transform.right, verticalShieldDistance * shieldXAxis, shieldInteractable))
                 {
-                    if (xAxis > 0)
+                    if (shieldXAxis > 0)
                     {
                         usedDir.Add(3);
                     }
@@ -355,7 +375,7 @@ public class PlayerScript : MonoBehaviour
                         usedDir.Add(2);
                     }
                     directionFlipTimer = 0.25f;
-                    direction = xAxis * -1;
+                    direction = shieldXAxis * -1;
                     speed += Mathf.Abs(yVelocity);
                     yVelocity = yVelocity / 2;
                     jumpStopBuffer = false;
