@@ -6,14 +6,15 @@ public class ScoreScript : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreLoading;
     public int target;
-
+    brickScript attachedCell;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         transform.localScale = new Vector3(1,1,1);
     }
-    public void SetScoreAndStart(int myTarget)
+    public void SetScoreAndStart(int myTarget, brickScript myCell)
     {
+        attachedCell = myCell;
         target = myTarget;
         StartCoroutine(CountUp());
     }
@@ -61,9 +62,11 @@ public class ScoreScript : MonoBehaviour
         yield return new WaitForSeconds(1);
         while (scoreLoading.color.a > 0)
         {
+            scoreLoading.text = target.ToString();
             scoreLoading.color = new Color(scoreLoading.color.r, scoreLoading.color.g, scoreLoading.color.b, scoreLoading.color.a - 5f * Time.deltaTime);
             yield return null;
         }
+        attachedCell.childActive = false;
         Destroy(gameObject);
     }
 

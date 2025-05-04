@@ -35,7 +35,7 @@ public class choiceScript : MonoBehaviour
                 break;
             case 2:
                 brickTitle.text = "Palm Tree";
-                brickDescription.text = "If this brick is not hit during the round gain 150 score.";
+                brickDescription.text = "If this brick is not hit during the round gain 100 score.";
                 brickColor.color = Color.green;
                 break;
             case 3:
@@ -50,7 +50,7 @@ public class choiceScript : MonoBehaviour
                 break;
             case 5:
                 brickTitle.text = "Piggy Bank";
-                brickDescription.text = "Unbreakable. Gains 10 score each time it gets hit.";
+                brickDescription.text = "Unbreakable. Gains 25 score each time it gets hit.";
                 brickColor.color = new Color(0.7169812f, 0.1116056f, 0.3944906f);
                 break;
             case 6:
@@ -87,6 +87,11 @@ public class choiceScript : MonoBehaviour
                 brickTitle.text = "The Eye";
                 brickDescription.text = "Provides no score. If it is not hit throughout the round, gain 4 rerolls.";
                 brickColor.color = new Color(0.6303558f, 0, 1);
+                break;
+            case 13:
+                brickTitle.text = "Brick of Fortune";
+                brickDescription.text = "Gains 50 score for each time the wheel was spun throughout the game.";
+                brickColor.color = new Color(0.09878961f, 0.5660378f, 0.4582838f);
                 break;
         }
     }
@@ -127,14 +132,14 @@ public class choiceScript : MonoBehaviour
         alreadyUsed = true;
         while(gameObject.transform.localScale.x > 0)
         {
+            gm.closeable = false;
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x - 5f * Time.deltaTime, gameObject.transform.localScale.y - 5f * Time.deltaTime, gameObject.transform.localScale.z - 5f * Time.deltaTime);
             yield return null;
         }
+        gm.closeable = true;
         panel.color = Color.white;
         gameObject.SetActive(false);
         gameObject.transform.localScale = Vector3.zero;
         alreadyUsed = false;
     }
-
-    
 }

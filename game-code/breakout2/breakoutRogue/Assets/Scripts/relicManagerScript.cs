@@ -68,9 +68,6 @@ public class relicManagerScript : MonoBehaviour
                 }
             }
         }
-        Debug.Log(tempRelics[0]);
-        Debug.Log(tempRelics[1]);
-        Debug.Log(tempRelics[2]);
         StartCoroutine(MaximizeAllWindows());
     }
     public void skipRelic()

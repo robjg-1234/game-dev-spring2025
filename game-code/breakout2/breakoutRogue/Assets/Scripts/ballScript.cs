@@ -28,7 +28,6 @@ public class ballScript : MonoBehaviour
     {
         if (collision.transform.CompareTag("paddle"))
         {
-            
             ContactPoint2D hit = collision.GetContact(0);
             if (hit.point.x < collision.transform.position.x - 0.65)
             {
@@ -115,10 +114,5 @@ public class ballScript : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-    }
-    private Vector2 vectorCoverter(Vector3 position)
-    {
-        Vector2 newVector = new Vector2(position.x, position.y);
-        return newVector;
     }
 }

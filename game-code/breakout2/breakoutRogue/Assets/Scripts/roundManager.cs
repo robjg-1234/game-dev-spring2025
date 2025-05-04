@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class roundManager : MonoBehaviour
 {
+    [SerializeField] GameObject wheelButton;
     [SerializeField] GameObject option1;
     [SerializeField] GameObject option2;
     [SerializeField] GameObject option3;
@@ -31,6 +32,7 @@ public class roundManager : MonoBehaviour
     }
     public void closeSummary()
     {
+        gm.CloseTop();
         if (waveLoss)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -38,7 +40,12 @@ public class roundManager : MonoBehaviour
         else
         {
             StartCoroutine(MinimizeWindow());
+            wheelButton.SetActive(true);
         }
+    }
+    public void SilenceTheWheel()
+    {
+        wheelButton.SetActive(false);
     }
     public void openSummary(int score, bool isWave, bool lost, int objective, bool win)
     {
@@ -102,7 +109,6 @@ public class roundManager : MonoBehaviour
         {
             startRound();
         }
-        
     }
 
     IEnumerator MaximizeWindow()

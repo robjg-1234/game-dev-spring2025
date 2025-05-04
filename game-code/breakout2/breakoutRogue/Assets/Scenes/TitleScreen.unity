@@ -1130,8 +1130,9 @@ MonoBehaviour:
     the start of each round, you can modify three white bricks from your board with
     the ones you randomly receive. If you wish, you can reroll them individually
     to get a different one, but beware, you get a limited amount of rerolls each
-    round. You can also skip to gain three extra rerolls. After each wave, you can
-    choose one of three relics with off-the-board effects.'
+    round. You can also skip to gain three extra rerolls. You can also use rerolls
+    to spin the wheel which has different effects both positive and negative. After
+    each wave, you can choose one of three relics with off-the-board effects.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}
   m_sharedMaterial: {fileID: -9190269041909592718, guid: 02a1e0166a411e94ca0c419b0066d626, type: 2}

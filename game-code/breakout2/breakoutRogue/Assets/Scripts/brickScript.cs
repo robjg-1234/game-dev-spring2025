@@ -10,13 +10,14 @@ public class brickScript : MonoBehaviour
     [SerializeField] GameObject tempScoreShower;
     [SerializeField] Camera cam;
     [SerializeField] GameObject canvasObject;
-    GameObject child;
+    GameObject child = null;
     gameManager gm;
     float scoreValue = 25f;
     public int brickType = -1;
     public bool durable = false;
     public bool unbreakable = false;
     public int ballsConsumed = 0;
+    public bool childActive = false;
     int hits = 0;
     float multiplier = 1;
     public float defaultMult = 1;
@@ -33,8 +34,6 @@ public class brickScript : MonoBehaviour
     }
     public void updateBrickType(int newType)
     {
-
-
         brickType = newType;
         switch (brickType)
         {
@@ -67,7 +66,7 @@ public class brickScript : MonoBehaviour
                 //Piggy Bank
                 rend.color = new Color(0.7169812f, 0.1116056f, 0.3944906f);
                 unbreakable = true;
-                scoreValue = 10 * hits;
+                scoreValue = 25 * hits;
                 break;
             case 6:
                 //Phantasmal Brick
@@ -113,6 +112,11 @@ public class brickScript : MonoBehaviour
                 rend.color = new Color(0.6303558f, 0, 1);
                 scoreValue = 0;
                 break;
+            case 13:
+                //Wheel Brick
+                rend.color = new Color(0.09878961f, 0.5660378f, 0.4582838f);
+                scoreValue = gm.timesSpun * 50;
+                break;
             default:
                 //Basic Brick
                 rend.color = Color.white;
@@ -141,15 +145,19 @@ public class brickScript : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (brickType < 0)
+        if (!gm.OnWheel)
         {
-            updateBrickType(gm.getNewType(posX, posY));
-        }
-        else
-        {
-            if (!flashing)
+            if (brickType < 0)
             {
-                StartCoroutine(FlashRed());
+                updateBrickType(gm.getNewType(posX, posY));
+            }
+            else
+            {
+                if (!flashing)
+                {
+                    flashing = true;
+                    StartCoroutine(FlashRed());
+                }
             }
         }
     }
@@ -157,11 +165,11 @@ public class brickScript : MonoBehaviour
     {
         Color temp = rend.color;
         rend.color = Color.red;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         rend.color = temp;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         rend.color = Color.red;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         rend.color = temp;
         flashing = false;
     }
@@ -214,8 +222,8 @@ public class brickScript : MonoBehaviour
             case 2:
                 if (!hitOnce)
                 {
-                    createTempScore(150f * multiplier * gm.desperadoMult);
-                    gm.updateScore(150f * multiplier * gm.desperadoMult);
+                    createTempScore(100f * multiplier * gm.desperadoMult);
+                    gm.updateScore(100f * multiplier * gm.desperadoMult, brickType);
                 }
                 break;
             case 12:
@@ -302,7 +310,7 @@ public class brickScript : MonoBehaviour
             }
             hitOnce = true;
             createTempScore(scoreValue * multiplier * gm.desperadoMult);
-            gm.updateScore(scoreValue * multiplier * gm.desperadoMult);
+            gm.updateScore(scoreValue * multiplier * gm.desperadoMult, brickType);
 
             if (durable)
             {
@@ -324,9 +332,10 @@ public class brickScript : MonoBehaviour
         tempVal = val;
         if (child == null)
         {
+            childActive = true;
             child = Instantiate(tempScoreShower, cam.WorldToScreenPoint(transform.position), Quaternion.identity);
             child.transform.SetParent(canvasObject.transform);
-            child.GetComponent<ScoreScript>().SetScoreAndStart(Mathf.RoundToInt(tempVal));
+            child.GetComponent<ScoreScript>().SetScoreAndStart(Mathf.RoundToInt(tempVal), this);
         }
         else
         {
