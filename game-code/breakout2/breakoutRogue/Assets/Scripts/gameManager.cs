@@ -458,7 +458,7 @@ public class gameManager : MonoBehaviour
     }
     public void OpenWheelPage()
     {
-        if (!hasExtra)
+        if (!hasExtra && closeable)
         {
             currentSelection?.unSelect(0);
             currentSelection = null;
